@@ -503,7 +503,7 @@ let touchStartY = 0;
 function init() {
   loadProgress();
   initWordData();
-  setLevel(state.level, true);
+  setLevel(state.level, true, true);
   renderSettings();
   updateUI();
 }
@@ -544,9 +544,9 @@ function restoreAllProgress() {
 }
 
 // ========== LEVEL / BATCH ==========
-function setLevel(level, skipSave) {
+function setLevel(level, skipSave, restoreBatch) {
   state.level = level;
-  state.batchStart = 0;
+  if (!restoreBatch) state.batchStart = 0;
   state.bookmarkMode = false;
   refreshSession();
   if (!skipSave) saveProgress();
@@ -687,6 +687,7 @@ function goToPrevCard() {
   if (state.currentIndex > 0) {
     state.currentIndex--;
     state.answerVisible = false;
+    renderProgressBar();
     updateCard();
   }
 }
@@ -788,11 +789,13 @@ function shuffleSession() {
   state.sessionWords = notMem;
   state.currentIndex = 0;
   state.answerVisible = false;
+  renderProgressBar();
   updateCard();
 }
 
 function confirmReset() {
   const isKo = state.isKo;
+  document.getElementById('dialog').dataset.forced = '';
   showDialog('⚠️',
     isKo ? '현재 스테이지 초기화' : '現在ステージリセット',
     isKo ? '현재 스테이지의 외움/못외움을 전부 초기화합니다.' : '現在ステージの学習記録をリセットします。',
@@ -1213,7 +1216,10 @@ function closeDialog() {
 }
 
 function dialogBgClick(e) {
-  if (e.target === document.getElementById('dialog')) closeDialog();
+  // Only allow closing if it's not a forced dialog (round complete)
+  if (e.target === document.getElementById('dialog') && !document.getElementById('dialog').dataset.forced) {
+    closeDialog();
+  }
 }
 
 function showCompletionDialog() {
@@ -1244,6 +1250,7 @@ function showCompletionDialog() {
       action: () => { closeDialog(); state.bookmarkMode = true; refreshSession(); updateUI(); }
     });
   }
+  document.getElementById('dialog').dataset.forced = '';
   showDialog('🎉',
     isKo ? `${count}회독 완료!` : `${count}周目完了!`,
     isKo ? `스테이지 ${currentBatch()} 단어를 모두 외웠어요!` : `ステージ ${currentBatch()} の単語を全部覚えました！`,
@@ -1267,6 +1274,7 @@ function showRoundDialog() {
       else goToBatch(currentBatch());
     }
   });
+  document.getElementById('dialog').dataset.forced = 'true';
   showDialog('📖',
     isKo ? '한 바퀴 완료!' : '一周完了！',
     isKo ? `아직 외우지 못한 단어가 ${rem}개 있어요.` : `まだ覚えていない単語が${rem}個あります。`,
