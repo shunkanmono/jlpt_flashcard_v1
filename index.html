@@ -734,6 +734,7 @@ function nextCard() {
   state.answerVisible = false;
   if (state.currentIndex < state.sessionWords.length - 1) {
     state.currentIndex++;
+    renderProgressBar();
     updateCard();
     return;
   }
@@ -1119,7 +1120,8 @@ function speakExample(e) {
   e.stopPropagation();
   const w = currentWord();
   if (w && w.example && state.soundEnabled) {
-    const clean = w.example.replace(/[^(（]*[\(（]([^)）]+)[\)）]/g, '$1').replace(/[\(（][^)）]*[\)）]/g, '');
+    // 한자(히라가나) → 히라가나로 교체, 괄호 없는 일반 텍스트는 그대로 유지
+    const clean = w.example.replace(/[^\s\u3000-\u303f\u3040-\u309f\u30a0-\u30ff(（）)、。！？\x20-\x7e]+[\(（]([^)）]+)[\)）]/g, '$1');
     speakText(clean);
   }
 }
