@@ -59,10 +59,10 @@ html,body{height:100%;background:var(--bg);color:var(--txt);font-family:-apple-s
 .batch-num{font-size:10px;color:var(--dim)}
 
 /* MAIN AREA */
-#main{flex:1;overflow:hidden;position:relative}
+#main{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
 
 /* FLASHCARD — flashcard_widget.dart */
-#fc-area{display:flex;flex-direction:column;padding:8px 12px 4px;height:100%;overflow:hidden}
+#fc-area{display:flex;flex-direction:column;padding:8px 12px 4px;flex:1;min-height:0;overflow:hidden}
 .fc-counter{display:flex;align-items:center;font-size:11px;color:var(--dim2);margin-bottom:8px}
 .mode-badge{margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(243,156,18,0.2);font-size:10px;color:var(--yellow)}
 .fc-bm-count{margin-left:auto;display:flex;align-items:center;gap:3px;font-size:11px;color:rgba(243,156,18,0.7)}
