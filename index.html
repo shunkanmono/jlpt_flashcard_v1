@@ -662,13 +662,9 @@ function speakHira(e) { e.stopPropagation(); const w = curWord(); if (w && S.sou
 function speakEx(e) {
   e.stopPropagation();
   const w = curWord();
-  if (!w || !w.example || !S.soundEnabled) return;
-  // 한자(히라가나) → 히라가나로 변환 (한자의 다중 읽기 오류 방지)
-  // 읽기 단위 사이에 공백을 넣어 TTS 단어 경계 인식 개선
-  const clean = w.example
-    .replace(/[\u4e00-\u9faf\u30A0-\u30FF][\u4e00-\u9faf\u3040-\u309f\u30A0-\u30FF]*[\(（]([^)）]+)[\)）]/g, ' $1')
-    .replace(/^\s+/, '')
-    .replace(/\s+/g, ' ');
+    if (!w || !w.example || !S.soundEnabled) return;
+  // 한자 유지 + 괄호(읽기 가이드)만 제거 → Apple TTS의 자연스러운 발음 활용
+  const clean = w.example.replace(/[\(（][^)）]*[\)）]/g, '');
   speak(clean);
 }
 function toggleSound() {
