@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="일본어 단어장">
@@ -11,463 +11,309 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>일본어 단어장</title>
 <style>
-  :root {
-    --bg: #1A1A2E;
-    --card-bg: #16213E;
-    --card-bg2: #0F3460;
-    --border: rgba(255,255,255,0.08);
-    --text: #ffffff;
-    --text-dim: rgba(255,255,255,0.45);
-    --text-dimmer: rgba(255,255,255,0.25);
-    --blue: #4A90D9;
-    --green: #27AE60;
-    --green2: #2ECC71;
-    --red: #E74C3C;
-    --orange: #E67E22;
-    --yellow: #F39C12;
-    --n1: #E74C3C;
-    --n2: #E67E22;
-    --n3: #F39C12;
-    --n4: #27AE60;
-    --n5: #2980B9;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, 'Noto Sans KR', sans-serif; overflow: hidden; user-select: none; }
+:root{--bg:#1A1A2E;--card1:#16213E;--card2:rgba(15,52,96,0.8);--border:rgba(255,255,255,0.08);--txt:#fff;--dim:rgba(255,255,255,0.45);--dim2:rgba(255,255,255,0.25);--blue:#4A90D9;--green:#27AE60;--green2:#2ECC71;--red:#E74C3C;--orange:#E67E22;--yellow:#F39C12;--n1:#E74C3C;--n2:#E67E22;--n3:#F39C12;--n4:#27AE60;--n5:#2980B9}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:-apple-system,'Noto Sans KR','Hiragino Sans',sans-serif;overflow:hidden;user-select:none}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:420px;margin:0 auto;background:var(--bg);border-left:1px solid var(--border);border-right:1px solid var(--border)}
 
-  /* APP SHELL */
-  #app { display: flex; flex-direction: column; height: 100dvh; max-width: 420px; margin: 0 auto; background: var(--bg); border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+/* TITLEBAR — flashcard_screen.dart _buildTitleBar */
+#titlebar{display:flex;align-items:center;height:36px;padding:0 12px;background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border);flex-shrink:0}
+#titlebar .dots{display:flex;gap:3px;margin-right:8px}
+#titlebar .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25)}
+#titlebar .title{font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:.5px;flex:1}
+.tbtn{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:4px;border:1px solid rgba(74,144,217,0.4);background:rgba(74,144,217,0.2);font-size:10px;font-weight:700;color:var(--blue);cursor:pointer}
+.tbtn.muted{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.38)}
+.tbtn svg{width:12px;height:12px}
 
-  /* TITLE BAR */
-  #titlebar { display: flex; align-items: center; height: 44px; padding: 0 12px; background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  #titlebar .title { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75); letter-spacing: 0.5px; flex: 1; }
-  .tbtn { display: flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 5px; background: rgba(74,144,217,0.2); border: 1px solid rgba(74,144,217,0.4); font-size: 11px; font-weight: 700; color: var(--blue); cursor: pointer; }
-  .tbtn.muted { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.4); }
-  .tbtn svg { width: 13px; height: 13px; }
-  .tbtn + .tbtn { margin-left: 6px; }
+/* LEVEL/BATCH BAR — flashcard_screen.dart _buildLevelBatchBar */
+#levelbar{padding:6px 10px;flex-shrink:0}
+.level-row{display:flex;align-items:center;gap:4px;margin-bottom:6px}
+.lvl-btn{padding:4px 8px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.38);cursor:pointer;transition:all .2s}
+.lvl-btn.active{color:#fff;font-weight:700}
+.lvl-btn[data-l="5"].active{background:var(--n5);border-color:var(--n5)}
+.lvl-btn[data-l="4"].active{background:var(--n4);border-color:var(--n4)}
+.lvl-btn[data-l="3"].active{background:var(--n3);border-color:var(--n3)}
+.lvl-btn[data-l="2"].active{background:var(--n2);border-color:var(--n2)}
+.lvl-btn[data-l="1"].active{background:var(--n1);border-color:var(--n1)}
+.bm-btn{margin-left:auto;display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);cursor:pointer;transition:all .2s}
+.bm-btn.active{background:rgba(231,76,60,0.3);border-color:rgba(231,76,60,0.6);color:var(--red)}
+.bm-btn svg{width:10px;height:10px}
+.stage-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;height:26px}
+.stage-scroll::-webkit-scrollbar{display:none}
+.stage-btn{flex-shrink:0;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);font-size:10px;color:rgba(255,255,255,0.38);cursor:pointer;white-space:nowrap;transition:all .2s}
+.stage-btn.active{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.4);color:#fff;font-weight:700}
 
-  /* LEVEL BAR */
-  #levelbar { padding: 8px 10px 4px; flex-shrink: 0; }
-  .level-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
-  .lvl-btn { padding: 4px 9px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); font-size: 11px; color: rgba(255,255,255,0.4); cursor: pointer; transition: all .18s; }
-  .lvl-btn.active { color: #fff; font-weight: 700; }
-  .lvl-btn[data-l="1"].active { background: var(--n1); border-color: var(--n1); }
-  .lvl-btn[data-l="2"].active { background: var(--n2); border-color: var(--n2); }
-  .lvl-btn[data-l="3"].active { background: var(--n3); border-color: var(--n3); }
-  .lvl-btn[data-l="4"].active { background: var(--n4); border-color: var(--n4); }
-  .lvl-btn[data-l="5"].active { background: var(--n5); border-color: var(--n5); }
-  .bookmark-btn { margin-left: auto; display: flex; align-items: center; gap: 3px; padding: 4px 8px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); cursor: pointer; transition: all .18s; }
-  .bookmark-btn.active { background: rgba(231,76,60,0.3); border-color: rgba(231,76,60,0.6); color: var(--red); }
-  .stage-scroll { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-  .stage-scroll::-webkit-scrollbar { display: none; }
-  .stage-btn { flex-shrink: 0; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); font-size: 10px; color: rgba(255,255,255,0.38); cursor: pointer; white-space: nowrap; transition: all .18s; }
-  .stage-btn.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; font-weight: 700; }
+/* PROGRESS BAR — progress_bar_widget.dart */
+#progressbar{padding:4px 10px 6px;flex-shrink:0}
+.pbar-track{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;margin-bottom:5px}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));border-radius:2px;transition:width .4s;box-shadow:0 0 6px rgba(39,174,96,0.4)}
+.pbar-stats{display:flex;align-items:center;gap:6px;font-size:10px}
+.stat-chip{display:flex;align-items:center;gap:3px;font-weight:600}
+.stat-chip svg{width:10px;height:10px}
+.stat-chip.mem{color:var(--green)}
+.stat-chip.flag{color:var(--red)}
+.batch-nav{margin-left:auto;display:flex;align-items:center;gap:4px}
+.bnav-btn{width:20px;height:20px;border-radius:4px;background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.bnav-btn:disabled{opacity:.3;cursor:default}
+.bnav-btn svg{width:14px;height:14px}
+.batch-num{font-size:10px;color:var(--dim)}
 
-  /* PROGRESS BAR */
-  #progressbar { padding: 4px 10px 6px; flex-shrink: 0; }
-  .pbar-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
-  .pbar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green2)); border-radius: 2px; transition: width .4s ease; box-shadow: 0 0 6px rgba(39,174,96,0.4); }
-  .pbar-stats { display: flex; align-items: center; gap: 6px; font-size: 10px; }
-  .stat-chip { display: flex; align-items: center; gap: 3px; font-weight: 600; }
-  .stat-chip svg { width: 10px; height: 10px; }
-  .stat-chip.mem { color: var(--green); }
-  .stat-chip.flag { color: var(--red); }
-  .batch-nav { margin-left: auto; display: flex; align-items: center; gap: 4px; }
-  .batch-nav-btn { width: 20px; height: 20px; border-radius: 4px; background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity .15s; }
-  .batch-nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .batch-nav-btn svg { width: 14px; height: 14px; }
-  .batch-num { font-size: 10px; color: var(--text-dim); }
+/* MAIN AREA */
+#main{flex:1;overflow:hidden;position:relative}
 
-  /* MAIN CONTENT */
-  #main { flex: 1; overflow: hidden; position: relative; }
-  #panel { position: absolute; inset: 0; display: flex; flex-direction: column; }
+/* FLASHCARD — flashcard_widget.dart */
+#fc-area{display:flex;flex-direction:column;padding:8px 12px 4px;height:100%;overflow:hidden}
+.fc-counter{display:flex;align-items:center;font-size:11px;color:var(--dim2);margin-bottom:8px}
+.mode-badge{margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(243,156,18,0.2);font-size:10px;color:var(--yellow)}
+.fc-bm-count{margin-left:auto;display:flex;align-items:center;gap:3px;font-size:11px;color:rgba(243,156,18,0.7)}
+.fc-bm-count svg{width:10px;height:10px}
 
-  /* FLASHCARD */
-  #flashcard-area { flex: 1; padding: 8px 12px 4px; display: flex; flex-direction: column; overflow: hidden; }
-  .card-counter { display: flex; align-items: center; font-size: 11px; color: var(--text-dimmer); margin-bottom: 8px; }
-  .mode-badge { margin-left: 6px; padding: 1px 6px; border-radius: 4px; background: rgba(243,156,18,0.2); font-size: 10px; color: var(--yellow); }
-  .batch-flag-count { margin-left: auto; display: flex; align-items: center; gap: 3px; font-size: 11px; color: rgba(243,156,18,0.7); }
-  .batch-flag-count svg { width: 10px; height: 10px; }
+.card{flex:1;border-radius:12px;background:linear-gradient(135deg,var(--card1),var(--card2));border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;cursor:pointer;position:relative;overflow:hidden;touch-action:pan-y}
+.card:active{transform:scale(0.99)}
 
-  .card { flex: 1; border-radius: 12px; background: linear-gradient(135deg, var(--card-bg), rgba(15,52,96,0.8)); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; cursor: pointer; position: relative; overflow: hidden; transition: transform .1s; touch-action: pan-y; }
-  .card:active { transform: scale(0.99); }
+.lv-badge{padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-bottom:16px}
+.kanji-txt{font-weight:300;letter-spacing:2px;text-align:center;margin-bottom:16px}
+.divider-sm{width:60px;height:1px;background:rgba(255,255,255,0.15);margin-bottom:12px}
+.hira-row{display:flex;align-items:center;gap:6px;min-height:1.4em}
+.hira-txt{letter-spacing:1.5px;color:var(--blue);transition:opacity .3s}
+.hira-txt.hidden{opacity:0}
+.vol-btn{background:none;border:none;cursor:pointer;color:rgba(74,144,217,0.6);padding:2px;display:flex;align-items:center}
+.vol-btn svg{width:14px;height:14px}
+.ko-txt{color:rgba(255,255,255,0.85);font-weight:500;text-align:center;padding:0 16px;margin-top:8px;transition:opacity .3s}
+.ko-txt.hidden{opacity:0}
 
-  .level-badge { padding: 3px 9px; border-radius: 6px; font-size: 10px; font-weight: 700; margin-bottom: 16px; }
-  .kanji-text { font-weight: 300; letter-spacing: 2px; text-align: center; margin-bottom: 16px; transition: font-size .2s; }
-  .divider { width: 60px; height: 1px; background: rgba(255,255,255,0.15); margin-bottom: 12px; }
-  .hiragana-row { display: flex; align-items: center; gap: 6px; min-height: 1.4em; }
-  .hiragana-text { letter-spacing: 1.5px; color: var(--blue); transition: opacity .3s, font-size .2s; }
-  .hiragana-text.hidden { opacity: 0; }
-  .vol-btn { background: none; border: none; cursor: pointer; color: rgba(74,144,217,0.6); padding: 2px; display: flex; align-items: center; }
-  .vol-btn svg { width: 14px; height: 14px; }
-  .korean-text { color: rgba(255,255,255,0.85); font-weight: 500; text-align: center; padding: 0 16px; margin-top: 8px; transition: opacity .3s, font-size .2s; }
-  .korean-text.hidden { opacity: 0; }
+.ex-area{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.1);width:100%;text-align:center;cursor:pointer}
+.ruby-wrap{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end}
+.ruby-unit{display:inline-flex;flex-direction:column;align-items:center}
+.ruby-unit .rt{color:rgba(74,144,217,0.6);line-height:1.2;min-height:1em}
+.ruby-unit .rb{line-height:1.4}
+.ex-ko{color:rgba(255,255,255,0.4);margin-top:4px;line-height:1.5}
+.ex-hint{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:4px;color:rgba(255,255,255,0.2);font-size:9px}
+.ex-hint svg{width:10px;height:10px}
 
-  .example-area { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; cursor: pointer; }
-  .example-hint { display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px; color: rgba(255,255,255,0.2); font-size: 9px; }
-  .example-hint svg { width: 10px; height: 10px; }
+.tap-hint{margin-top:16px;font-size:11px;color:var(--dim2);transition:opacity .3s}
+.tap-hint.hidden{opacity:0}
 
-  /* Ruby text */
-  .ruby-wrap { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 0; }
-  .ruby-unit { display: inline-flex; flex-direction: column; align-items: center; }
-  .ruby-unit .rt { font-size: 0.65em; color: rgba(74,144,217,0.6); line-height: 1.2; min-height: 1em; }
-  .ruby-unit .rb { line-height: 1.4; }
-  .example-ko { color: rgba(255,255,255,0.4); margin-top: 4px; line-height: 1.5; }
+.bm-overlay{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.bm-overlay.flagged{background:rgba(243,156,18,0.2);border-color:rgba(243,156,18,0.5)}
+.bm-overlay svg{width:14px;height:14px;color:rgba(255,255,255,0.3)}
+.bm-overlay.flagged svg{color:var(--yellow)}
 
-  .tap-hint { margin-top: 16px; font-size: 11px; color: var(--text-dimmer); transition: opacity .3s; }
-  .tap-hint.hidden { opacity: 0; }
+.swipe-hint{position:absolute;bottom:8px;left:0;right:0;display:flex;justify-content:center;gap:20px;font-size:9px;color:rgba(255,255,255,0.15);pointer-events:none}
 
-  .bookmark-overlay { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; }
-  .bookmark-overlay.flagged { background: rgba(243,156,18,0.2); border-color: rgba(243,156,18,0.5); }
-  .bookmark-overlay svg { width: 14px; height: 14px; color: rgba(255,255,255,0.3); }
-  .bookmark-overlay.flagged svg { color: var(--yellow); }
+/* EMPTY STATE */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px}
+.empty-state svg{width:40px;height:40px;color:rgba(255,255,255,0.2)}
+.empty-state p{font-size:13px;color:var(--dim);text-align:center}
+.switch-btn{padding:6px 14px;border-radius:6px;background:rgba(74,144,217,0.2);border:1px solid rgba(74,144,217,0.4);color:var(--blue);font-size:12px;cursor:pointer}
 
-  /* EMPTY STATE */
-  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; }
-  .empty-state svg { width: 40px; height: 40px; color: rgba(255,255,255,0.2); }
-  .empty-state p { font-size: 13px; color: var(--text-dim); text-align: center; }
-  .switch-btn { padding: 6px 14px; border-radius: 6px; background: rgba(74,144,217,0.2); border: 1px solid rgba(74,144,217,0.4); color: var(--blue); font-size: 12px; cursor: pointer; }
+/* ACTION BUTTONS — flashcard_widget.dart _buildActionButtons */
+#actions{padding:0 12px 4px;display:flex;gap:6px;flex-shrink:0}
+.act-btn{flex:1;height:40px;border-radius:8px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:600;transition:opacity .15s}
+.act-btn:active{opacity:.75}
+.act-btn.bad{background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.4);color:var(--red)}
+.act-btn.bad.bm-mode{background:rgba(243,156,18,0.15);border-color:rgba(243,156,18,0.4);color:var(--yellow)}
+.act-btn.skip{flex:none;width:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4)}
+.act-btn.good{background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.4);color:var(--green)}
+.act-btn svg{width:14px;height:14px}
 
-  /* ACTION BUTTONS */
-  #actions { padding: 0 12px 8px; display: flex; gap: 6px; flex-shrink: 0; }
-  .act-btn { flex: 1; height: 40px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; transition: opacity .15s; }
-  .act-btn:active { opacity: 0.75; }
-  .act-btn.bad { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.4); color: var(--red); }
-  .act-btn.bad.bookmark-mode { background: rgba(243,156,18,0.15); border-color: rgba(243,156,18,0.4); color: var(--yellow); }
-  .act-btn.skip { flex: none; width: 40px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.4); }
-  .act-btn.good { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.4); color: var(--green); }
-  .act-btn svg { width: 14px; height: 14px; }
+/* CONTROL BAR — control_bar_widget.dart */
+#controlbar{height:40px;padding:0 10px;display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.03);border-top:1px solid rgba(255,255,255,0.06);border-radius:0 0 12px 12px;flex-shrink:0}
+.cb{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.04);border:none;color:rgba(255,255,255,0.38);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cb:active{background:rgba(255,255,255,0.1)}
+.cb svg{width:14px;height:14px}
+.cb-spacer{flex:1}
+.cb-txt{display:flex;align-items:center;gap:3px;padding:4px 7px;border-radius:6px;background:rgba(255,255,255,0.04);border:none;color:rgba(255,255,255,0.4);font-size:10px;cursor:pointer}
+.cb-txt svg{width:12px;height:12px}
+.cb-txt+.cb-txt{margin-left:4px}
 
-  /* CONTROL BAR */
-  #controlbar { height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.06); border-radius: 0 0 12px 12px; flex-shrink: 0; }
-  .ctrl-btn { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.04); border: none; color: rgba(255,255,255,0.38); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
-  .ctrl-btn:active { background: rgba(255,255,255,0.1); }
-  .ctrl-btn svg { width: 14px; height: 14px; }
-  .ctrl-spacer { flex: 1; }
-  .ctrl-text-btn { display: flex; align-items: center; gap: 3px; padding: 4px 7px; border-radius: 6px; background: rgba(255,255,255,0.04); border: none; color: rgba(255,255,255,0.4); font-size: 10px; cursor: pointer; }
-  .ctrl-text-btn svg { width: 12px; height: 12px; }
-  .ctrl-text-btn + .ctrl-text-btn { margin-left: 4px; }
+/* SIDE PANELS — settings_panel.dart, stats_panel.dart */
+.side-panel{position:absolute;inset:0;background:var(--bg);overflow-y:auto;padding:14px;z-index:10}
+.panel-hdr{display:flex;align-items:center;margin-bottom:16px}
+.panel-hdr h2{font-size:14px;font-weight:600;flex:1}
+.panel-close{background:none;border:none;color:rgba(255,255,255,0.38);cursor:pointer}
+.panel-close svg{width:16px;height:16px}
+.sec-label{font-size:11px;color:var(--dim);letter-spacing:.5px;margin-bottom:8px}
+.divider-line{height:1px;background:rgba(255,255,255,0.07);margin:14px 0}
 
-  /* SETTINGS / STATS PANEL */
-  .side-panel { position: absolute; inset: 0; background: var(--bg); overflow-y: auto; padding: 14px; }
-  .panel-header { display: flex; align-items: center; margin-bottom: 16px; }
-  .panel-header h2 { font-size: 14px; font-weight: 600; flex: 1; }
-  .panel-close { background: none; border: none; color: rgba(255,255,255,0.38); cursor: pointer; }
-  .panel-close svg { width: 16px; height: 16px; }
-  .section-label { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; margin-bottom: 8px; }
-  .divider-line { height: 1px; background: rgba(255,255,255,0.07); margin: 14px 0; }
+/* Settings */
+.setting-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.range-input{flex:1;-webkit-appearance:none;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;outline:none}
+.range-input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;cursor:pointer}
+.chip-group{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{padding:5px 12px;border-radius:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);font-size:12px;color:rgba(255,255,255,0.38);cursor:pointer;transition:all .15s}
+.chip.active{background:rgba(74,144,217,0.25);border-color:rgba(74,144,217,0.6);color:var(--blue);font-weight:700}
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.1);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:rgba(74,144,217,0.8)}
+.toggle-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle.on .toggle-knob{left:22px}
+.toggle-label{font-size:12px;color:rgba(255,255,255,0.6)}
+.preview-card{background:var(--card1);border-radius:8px;border:1px solid var(--border);padding:12px 8px;text-align:center;margin-bottom:14px}
+.tip-box{background:rgba(74,144,217,0.08);border:1px solid rgba(74,144,217,0.2);border-radius:8px;padding:10px;font-size:10px;color:rgba(255,255,255,0.5);line-height:1.7}
+.tip-box .tip-title{display:flex;align-items:center;gap:4px;color:var(--blue);font-size:11px;font-weight:600;margin-bottom:6px}
+.tip-box .tip-title svg{width:12px;height:12px}
 
-  /* Settings rows */
-  .setting-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .range-input { flex: 1; -webkit-appearance: none; height: 3px; background: rgba(255,255,255,0.12); border-radius: 2px; outline: none; }
-  .range-input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; cursor: pointer; }
-  .range-input::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; }
-  .range-val { font-size: 11px; color: var(--text-dim); min-width: 36px; text-align: right; }
-  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .chip { padding: 5px 12px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.38); cursor: pointer; transition: all .15s; }
-  .chip.active { background: rgba(74,144,217,0.25); border-color: rgba(74,144,217,0.6); color: var(--blue); font-weight: 700; }
-  .toggle-wrap { display: flex; align-items: center; gap: 10px; }
-  .toggle { width: 44px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.1); border: none; cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; }
-  .toggle.on { background: rgba(74,144,217,0.8); }
-  .toggle-thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left .2s; }
-  .toggle.on .toggle-thumb { left: 22px; }
-  .toggle-label { font-size: 12px; color: rgba(255,255,255,0.6); }
-  .preview-card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); padding: 12px 8px; text-align: center; margin-bottom: 14px; }
-  .tip-box { background: rgba(74,144,217,0.08); border: 1px solid rgba(74,144,217,0.2); border-radius: 8px; padding: 10px; font-size: 10px; color: rgba(255,255,255,0.5); line-height: 1.7; }
-  .tip-box .tip-title { display: flex; align-items: center; gap: 4px; color: var(--blue); font-size: 11px; font-weight: 600; margin-bottom: 6px; }
-  .tip-box .tip-title svg { width: 12px; height: 12px; }
+/* Stats */
+.stats-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;margin-bottom:12px}
+.mini-stats{display:flex}
+.mini-stat{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.mini-stat svg{width:16px;height:16px}
+.mini-stat .val{font-size:16px;font-weight:700}
+.mini-stat .lbl{font-size:9px;color:var(--dim)}
+.mini-stat.mem svg,.mini-stat.mem .val{color:var(--green)}
+.mini-stat.flag svg,.mini-stat.flag .val{color:var(--red)}
+.mini-stat.rem svg,.mini-stat.rem .val{color:rgba(255,255,255,0.38)}
+.sp-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:8px}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));border-radius:3px}
+.sp-pct{font-size:10px;color:var(--dim);text-align:center;margin-top:4px}
+.lsr{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.03);margin-bottom:6px}
+.lsr.cur{border-color:rgba(74,144,217,0.3);background:rgba(74,144,217,0.08)}
+.lsr-badge{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.lsr-info{flex:1}
+.lsr-nums{display:flex;align-items:center;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:4px}
+.lsr-pct{margin-left:auto;font-size:10px;font-weight:600}
+.lsr-track{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden}
+.lsr-fill{height:100%;border-radius:2px}
 
-  /* Stats */
-  .stats-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 10px; margin-bottom: 12px; }
-  .mini-stats { display: flex; }
-  .mini-stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .mini-stat svg { width: 16px; height: 16px; }
-  .mini-stat .val { font-size: 16px; font-weight: 700; }
-  .mini-stat .lbl { font-size: 9px; color: var(--text-dim); }
-  .mini-stat.mem svg,.mini-stat.mem .val { color: var(--green); }
-  .mini-stat.flag svg,.mini-stat.flag .val { color: var(--red); }
-  .mini-stat.rem svg,.mini-stat.rem .val { color: rgba(255,255,255,0.38); }
-  .stats-pbar { margin-top: 8px; }
-  .stats-pbar-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-  .stats-pbar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green2)); border-radius: 3px; }
-  .stats-pct { font-size: 10px; color: var(--text-dim); text-align: center; margin-top: 4px; }
-  .level-stat-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03); margin-bottom: 6px; }
-  .level-stat-row.current { border-color: rgba(74,144,217,0.3); background: rgba(74,144,217,0.08); }
-  .level-badge-sm { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
-  .lsr-info { flex: 1; }
-  .lsr-nums { display: flex; align-items: center; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
-  .lsr-pct { margin-left: auto; font-size: 10px; font-weight: 600; }
-  .lsr-track { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
-  .lsr-fill { height: 100%; border-radius: 2px; }
-
-  /* SWIPE INDICATOR */
-  .swipe-hint { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; justify-content: center; gap: 20px; font-size: 9px; color: rgba(255,255,255,0.15); pointer-events: none; }
-
-  /* Dialog */
-  .dialog-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-  .dialog { background: var(--bg); border-radius: 16px; padding: 20px; max-width: 320px; width: 100%; border: 1px solid var(--border); }
-  .dialog-emoji { font-size: 40px; text-align: center; margin-bottom: 12px; }
-  .dialog h3 { font-size: 20px; font-weight: 700; text-align: center; margin-bottom: 6px; }
-  .dialog p { font-size: 12px; color: var(--text-dim); text-align: center; line-height: 1.6; margin-bottom: 20px; }
-  .dialog-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; margin-bottom: 8px; transition: opacity .15s; }
-  .dialog-btn:active { opacity: 0.8; }
-  .dialog-btn.green { background: rgba(39,174,96,0.2); border: 1px solid rgba(39,174,96,0.5); color: var(--green); }
-  .dialog-btn.blue { background: rgba(74,144,217,0.2); border: 1px solid rgba(74,144,217,0.5); color: var(--blue); }
-  .dialog-btn.red { background: rgba(231,76,60,0.2); border: 1px solid rgba(231,76,60,0.5); color: var(--red); }
-  .dialog-confirm { display: flex; gap: 8px; }
-  .dialog-confirm .dialog-btn { flex: 1; }
+/* DIALOG — flashcard_screen.dart dialogs */
+.dlg-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.dlg{background:var(--bg);border-radius:16px;padding:20px;max-width:320px;width:100%;border:1px solid var(--border)}
+.dlg-emoji{font-size:40px;text-align:center;margin-bottom:12px}
+.dlg h3{font-size:20px;font-weight:700;text-align:center;margin-bottom:6px}
+.dlg p{font-size:12px;color:var(--dim);text-align:center;line-height:1.6;margin-bottom:20px;white-space:pre-line}
+.dlg-btn{width:100%;padding:10px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;margin-bottom:8px;text-align:center}
+.dlg-btn:active{opacity:.8}
+.dlg-btn.green{background:rgba(39,174,96,0.2);border:1px solid rgba(39,174,96,0.5);color:var(--green)}
+.dlg-btn.blue{background:rgba(74,144,217,0.2);border:1px solid rgba(74,144,217,0.5);color:var(--blue)}
+.dlg-btn.red{background:rgba(231,76,60,0.2);border:1px solid rgba(231,76,60,0.5);color:var(--red)}
+.dlg-confirm{display:flex;gap:8px}
+.dlg-confirm .dlg-btn{flex:1}
 </style>
 </head>
 <body>
-
 <div id="app">
-  <!-- TITLE BAR -->
-  <div id="titlebar">
-    <span class="title" id="app-title">일본어 단어장</span>
-    <button class="tbtn" id="sound-btn" onclick="toggleSound()">
-      <svg id="sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+
+<!-- TITLEBAR -->
+<div id="titlebar">
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <span class="title" id="app-title">일본어 단어장</span>
+  <button class="tbtn" id="sound-btn" onclick="toggleSound()">
+    <svg id="sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+  </button>
+  <button class="tbtn" id="lang-btn" onclick="toggleLang()" style="margin-left:6px">KO</button>
+</div>
+
+<!-- LEVEL BAR -->
+<div id="levelbar">
+  <div class="level-row">
+    <button class="lvl-btn" data-l="5" onclick="setLevel(5)">N5</button>
+    <button class="lvl-btn" data-l="4" onclick="setLevel(4)">N4</button>
+    <button class="lvl-btn" data-l="3" onclick="setLevel(3)">N3</button>
+    <button class="lvl-btn" data-l="2" onclick="setLevel(2)">N2</button>
+    <button class="lvl-btn" data-l="1" onclick="setLevel(1)">N1</button>
+    <button class="bm-btn" id="bm-mode-btn" onclick="toggleStudyMode()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span id="total-flag-count">0</span>
     </button>
-    <button class="tbtn" id="lang-btn" onclick="toggleLang()" style="margin-left:6px">KO</button>
   </div>
+  <div class="stage-scroll" id="stage-scroll"></div>
+</div>
 
-  <!-- LEVEL BAR -->
-  <div id="levelbar">
-    <div class="level-row">
-      <button class="lvl-btn" data-l="5" onclick="setLevel(5)">N5</button>
-      <button class="lvl-btn" data-l="4" onclick="setLevel(4)">N4</button>
-      <button class="lvl-btn" data-l="3" onclick="setLevel(3)">N3</button>
-      <button class="lvl-btn" data-l="2" onclick="setLevel(2)">N2</button>
-      <button class="lvl-btn" data-l="1" onclick="setLevel(1)">N1</button>
-      <button class="bookmark-btn" id="bookmark-mode-btn" onclick="toggleBookmarkMode()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        <span id="total-flag-count">0</span>
-      </button>
+<!-- PROGRESS BAR -->
+<div id="progressbar">
+  <div class="pbar-track"><div class="pbar-fill" id="pbar-fill" style="width:0%"></div></div>
+  <div class="pbar-stats">
+    <div class="stat-chip mem">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span id="p-mem">0</span>/<span id="p-tot">0</span>
     </div>
-    <div class="stage-scroll" id="stage-scroll"></div>
+    <div class="stat-chip flag" id="p-flag-wrap" style="display:none">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span id="p-flag">0</span>
+    </div>
+    <div class="batch-nav">
+      <button class="bnav-btn" id="prev-batch" onclick="goToPrevBatch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <span class="batch-num" id="batch-num">1/1</span>
+      <button class="bnav-btn" id="next-batch" onclick="goToNextBatch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
   </div>
+</div>
 
-  <!-- PROGRESS BAR -->
-  <div id="progressbar">
-    <div class="pbar-track"><div class="pbar-fill" id="pbar-fill" style="width:0%"></div></div>
-    <div class="pbar-stats">
-      <div class="stat-chip mem">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span id="prog-mem">0</span>/<span id="prog-total">0</span>
-      </div>
-      <div class="stat-chip flag" id="prog-flag-wrap" style="display:none">
+<!-- MAIN -->
+<div id="main">
+  <!-- FLASHCARD AREA -->
+  <div id="fc-area">
+    <div class="fc-counter">
+      <span id="fc-counter-txt">0 / 0</span>
+      <span class="mode-badge" id="fc-mode-badge" style="display:none">북마크</span>
+      <div class="fc-bm-count" id="fc-bm-chip">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        <span id="prog-flag">0</span>
+        <span id="fc-bm-num">0</span>
       </div>
-      <div class="batch-nav">
-        <button class="batch-nav-btn" id="prev-batch-btn" onclick="goToPrevBatch()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <span class="batch-num" id="batch-num">1/1</span>
-        <button class="batch-nav-btn" id="next-batch-btn" onclick="goToNextBatch()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
+    </div>
+    <div class="card" id="flashcard" onclick="onCardTap(event)" ontouchstart="tsStart(event)" ontouchend="tsEnd(event)">
+      <div class="lv-badge" id="c-lv-badge">N5</div>
+      <div class="kanji-txt" id="c-kanji" style="font-size:30px">—</div>
+      <div class="divider-sm"></div>
+      <div class="hira-row">
+        <span class="hira-txt hidden" id="c-hira">—</span>
+        <button class="vol-btn" id="c-vol" onclick="speakHira(event)" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
       </div>
+      <div class="ko-txt hidden" id="c-ko">—</div>
+      <div class="ex-area" id="c-ex-area" style="display:none" onclick="speakEx(event)">
+        <div class="ruby-wrap" id="c-ex-ruby"></div>
+        <div class="ex-ko" id="c-ex-ko"></div>
+        <div class="ex-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span>탭하여 예문 듣기</span></div>
+      </div>
+      <div class="tap-hint" id="c-tap-hint">탭하여 뜻 보기</div>
+      <div class="swipe-hint"><span>← 못 외움</span><span>외움 →</span></div>
+      <div class="bm-overlay" id="c-bm" onclick="toggleCardBm(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </div>
+    </div>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <p id="empty-txt"></p>
+      <button class="switch-btn" id="empty-switch" onclick="setStudyMode('all')" style="display:none">전체 모드로 전환</button>
     </div>
   </div>
 
-  <!-- MAIN -->
-  <div id="main">
-    <div id="panel">
-      <!-- FLASHCARD AREA -->
-      <div id="flashcard-area">
-        <div class="card-counter">
-          <span id="card-counter-text">0 / 0</span>
-          <span class="mode-badge" id="mode-badge" style="display:none">북마크</span>
-          <div class="batch-flag-count" id="batch-flag-chip">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span id="batch-flag-num">0</span>
-          </div>
-        </div>
-
-        <!-- CARD -->
-        <div class="card" id="flashcard" onclick="handleCardTap(event)" ontouchstart="touchStart(event)" ontouchend="touchEnd(event)">
-          <div class="level-badge" id="card-level-badge">N5</div>
-          <div class="kanji-text" id="card-kanji" style="font-size:30px">—</div>
-          <div class="divider"></div>
-
-          <div class="hiragana-row">
-            <span class="hiragana-text hidden" id="card-hiragana" style="font-size:18px">—</span>
-            <button class="vol-btn" id="card-vol-btn" onclick="speakCurrent(event)" style="display:none">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-            </button>
-          </div>
-
-          <div class="korean-text hidden" id="card-korean" style="font-size:20px">—</div>
-
-          <div class="example-area" id="example-area" style="display:none" onclick="speakExample(event)">
-            <div class="ruby-wrap" id="example-ruby"></div>
-            <div class="example-ko" id="example-ko" style="font-size:15px"></div>
-            <div class="example-hint">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              탭하여 예문 듣기
-            </div>
-          </div>
-
-          <div class="tap-hint" id="tap-hint">탭하여 뜻 보기</div>
-
-          <div class="swipe-hint"><span>← 못 외움</span><span>외움 →</span></div>
-
-          <!-- bookmark -->
-          <div class="bookmark-overlay" id="card-bookmark" onclick="toggleCardBookmark(event)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          </div>
-        </div>
-
-        <!-- EMPTY STATE -->
-        <div class="empty-state" id="empty-state" style="display:none">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <p id="empty-text">북마크한 단어가 없습니다</p>
-          <button class="switch-btn" onclick="exitBookmarkMode()">전체 모드로 전환</button>
-        </div>
-      </div>
-
-      <!-- ACTION BUTTONS -->
-      <div id="actions">
-        <button class="act-btn bad" id="bad-btn" onclick="handleBadBtn()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <span id="bad-label">못 외움</span>
-        </button>
-        <button class="act-btn skip" onclick="skipCard()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="act-btn good" onclick="markMemorized()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-          <span id="good-label">외움</span>
-        </button>
-      </div>
-
-      <!-- CONTROL BAR -->
-      <div id="controlbar">
-        <button class="ctrl-btn" onclick="goToPrevCard()" title="이전">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="ctrl-btn" onclick="shuffleSession()" title="셔플">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-        </button>
-        <button class="ctrl-btn" onclick="confirmReset()" title="초기화">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.79"/></svg>
-        </button>
-        <div class="ctrl-spacer"></div>
-        <button class="ctrl-text-btn" onclick="showStats()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span id="stats-label">통계</span>
-        </button>
-        <button class="ctrl-text-btn" onclick="showSettings()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span id="settings-label">설정</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- SETTINGS PANEL -->
-    <div class="side-panel" id="settings-panel" style="display:none">
-      <div class="panel-header">
-        <h2 id="settings-title">설정</h2>
-        <button class="panel-close" onclick="closePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      </div>
-
-      <div class="section-label" id="set-stage-size-label">스테이지 크기</div>
-      <div class="chip-group" id="batch-size-chips">
-        <div class="chip" data-size="10" onclick="setBatchSize(10)">10</div>
-        <div class="chip" data-size="20" onclick="setBatchSize(20)">20</div>
-        <div class="chip" data-size="30" onclick="setBatchSize(30)">30</div>
-        <div class="chip active" data-size="50" onclick="setBatchSize(50)">50</div>
-        <div class="chip" data-size="100" onclick="setBatchSize(100)">100</div>
-      </div>
-
-      <div class="divider-line"></div>
-      <div class="section-label" id="set-ui-lang-label">UI 언어</div>
-      <div class="chip-group">
-        <div class="chip active" id="lang-ko-chip" onclick="setLangKo()">한국어</div>
-        <div class="chip" id="lang-jp-chip" onclick="setLangJp()">日本語</div>
-      </div>
-
-      <div class="divider-line"></div>
-      <div class="section-label" id="set-sound-label">발음 듣기</div>
-      <div class="toggle-wrap" style="margin-bottom:14px">
-        <button class="toggle on" id="sound-toggle" onclick="toggleSound()"><div class="toggle-thumb"></div></button>
-        <span class="toggle-label" id="sound-toggle-label">발음 듣기 켜짐</span>
-      </div>
-
-      <div class="divider-line"></div>
-      <div class="section-label" id="set-font-label">글씨 크기</div>
-      <div class="chip-group" id="font-area-chips" style="margin-bottom:8px">
-        <div class="chip active" data-fa="0" onclick="setFontArea(0)" id="fa0">한자</div>
-        <div class="chip" data-fa="1" onclick="setFontArea(1)" id="fa1">발음/뜻</div>
-        <div class="chip" data-fa="2" onclick="setFontArea(2)" id="fa2">예문</div>
-      </div>
-      <div class="setting-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-        <input type="range" class="range-input" id="font-slider" oninput="onFontSlide(this.value)">
-        <span class="range-val" id="font-val">30px</span>
-      </div>
-      <div class="preview-card">
-        <div id="prev-kanji" style="font-size:30px;font-weight:300;letter-spacing:2px;margin-bottom:4px">食べる</div>
-        <div id="prev-hira" style="font-size:18px;color:var(--blue);margin-bottom:2px">たべる</div>
-        <div id="prev-ko" style="font-size:20px;color:rgba(255,255,255,0.85);font-weight:500;margin-bottom:4px">먹다</div>
-        <div id="prev-ex" style="font-size:15px;color:rgba(255,255,255,0.6)">私は毎日朝ごはんを食べる。</div>
-      </div>
-
-      <div class="tip-box">
-        <div class="tip-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span id="tip-title-text">사용 팁</span>
-        </div>
-        <span id="tip-text">• 좌우 스와이프로 외움/못 외움 표시<br>• 헷갈리는 단어는 🔖 버튼으로 복습<br>• 스테이지를 나눠 매일 조금씩 학습</span>
-      </div>
-    </div>
-
-    <!-- STATS PANEL -->
-    <div class="side-panel" id="stats-panel" style="display:none">
-      <div class="panel-header">
-        <h2 id="stats-title">학습 통계</h2>
-        <button class="panel-close" onclick="closePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-      </div>
-      <div class="section-label" id="stats-cur-label">N5 현재 배치</div>
-      <div class="stats-card">
-        <div class="mini-stats">
-          <div class="mini-stat mem">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span class="val" id="st-mem">0</span>
-            <span class="lbl" id="st-mem-lbl">외움</span>
-          </div>
-          <div class="mini-stat flag">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span class="val" id="st-flag">0</span>
-            <span class="lbl" id="st-flag-lbl">복습 필요</span>
-          </div>
-          <div class="mini-stat rem">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-            <span class="val" id="st-rem">0</span>
-            <span class="lbl" id="st-rem-lbl">미학습</span>
-          </div>
-        </div>
-        <div class="stats-pbar">
-          <div class="stats-pbar-track"><div class="stats-pbar-fill" id="st-pbar" style="width:0%"></div></div>
-          <div class="stats-pct" id="st-pct">배치 완성도 0%</div>
-        </div>
-      </div>
-      <div class="section-label" id="stats-all-label">레벨별 전체 현황</div>
-      <div id="level-stats-list"></div>
-    </div>
+  <!-- ACTION BUTTONS -->
+  <div id="actions">
+    <button class="act-btn bad" id="btn-bad" onclick="onBadBtn()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span id="btn-bad-lbl">못 외움</span>
+    </button>
+    <button class="act-btn skip" onclick="skipCard()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+    <button class="act-btn good" onclick="markMemorized()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="btn-good-lbl">외움</span>
+    </button>
   </div>
+
+  <!-- CONTROL BAR -->
+  <div id="controlbar">
+    <button class="cb" onclick="goToPrevCard()" title="이전"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="cb" onclick="shuffleSession()" title="셔플"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>
+    <button class="cb" onclick="confirmReset()" title="초기화"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.79"/></svg></button>
+    <div class="cb-spacer"></div>
+    <button class="cb-txt" onclick="showStats()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span id="lbl-stats">통계</span></button>
+    <button class="cb-txt" onclick="showSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span id="lbl-settings">설정</span></button>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="side-panel" id="settings-panel" style="display:none"></div>
+  <!-- STATS PANEL -->
+  <div class="side-panel" id="stats-panel" style="display:none"></div>
+</div>
 </div>
 
 <!-- DIALOG -->
-<div class="dialog-overlay" id="dialog" style="display:none" onclick="dialogBgClick(event)">
-  <div class="dialog">
-    <div class="dialog-emoji" id="dialog-emoji">🎉</div>
-    <h3 id="dialog-title"></h3>
-    <p id="dialog-msg"></p>
-    <div id="dialog-buttons"></div>
-  </div>
-</div>
+<div class="dlg-bg" id="dlg" style="display:none" onclick="dlgBgClick(event)"><div class="dlg"><div class="dlg-emoji" id="dlg-emoji"></div><h3 id="dlg-title"></h3><p id="dlg-msg"></p><div id="dlg-btns"></div></div></div>
 
-<!-- Word data scripts -->
 <script src="words_n5.js"></script>
 <script src="words_n4.js"></script>
 <script src="words_n3.js"></script>
@@ -475,887 +321,698 @@
 <script src="words_n1.js"></script>
 
 <script>
-// ========== STATE ==========
-let state = {
-  level: 5,
-  batchSize: 50,
-  batchStart: 0,
-  isKo: true,
-  soundEnabled: true,
-  bookmarkMode: false,
-  sessionWords: [],
-  currentIndex: 0,
-  answerVisible: false,
-  kanjiFontSize: 30,
-  meaningFontSize: 20,
-  exampleFontSize: 15,
+// ============================================================
+// STATE — mirrors study_provider.dart fields
+// ============================================================
+const S = {
+  level: 5,             // _selectedLevel
+  isKo: true,           // _isKoreanUI
+  batchSize: 50,        // _batchSize
+  batchStart: 0,        // _currentBatchStart
+  studyMode: 'all',     // StudyMode.all | 'flagged'
+  sessionWords: [],     // _sessionWords
+  idx: 0,               // _currentIndex
+  answerVisible: false,  // _isAnswerVisible
+  soundEnabled: true,   // _soundEnabled
+  kanjiFontSize: 30,    // _kanjiFontSize
+  meaningFontSize: 20,  // _meaningFontSize
+  exampleFontSize: 18,  // _exampleFontSize  ← Flutter default=18
   fontArea: 0,
-  progress: {}, // { 'N5_0': [{mem,flag}, ...] } per word index
-  completionCount: {},
+  completionCount: {},  // _batchCompletionCount
 };
+let wordData = {};      // { level: [word, ...] }
+let touchSX = 0, touchSY = 0;
+let dlgDismissable = true;
+let isSpeaking = false; // _isSpeaking
 
-// All words per level (mutable with progress)
-let wordData = {};
-let touchStartX = 0;
-let touchStartY = 0;
-
-// ========== INIT ==========
+// ============================================================
+// INIT — mirrors initialize()
+// ============================================================
 function init() {
   loadProgress();
-  initWordData();
-  setLevel(state.level, true, true);
-  renderSettings();
-  updateUI();
+  buildWordData();
+  restoreAllProgress();
+  refreshWords();
+  renderAll();
 }
 
-function initWordData() {
-  const raw = {
-    1: typeof WORDS_N1 !== 'undefined' ? WORDS_N1 : [],
-    2: typeof WORDS_N2 !== 'undefined' ? WORDS_N2 : [],
-    3: typeof WORDS_N3 !== 'undefined' ? WORDS_N3 : [],
-    4: typeof WORDS_N4 !== 'undefined' ? WORDS_N4 : [],
-    5: typeof WORDS_N5 !== 'undefined' ? WORDS_N5 : [],
-  };
+function buildWordData() {
+  const raw = { 1: WORDS_N1||[], 2: WORDS_N2||[], 3: WORDS_N3||[], 4: WORDS_N4||[], 5: WORDS_N5||[] };
   for (let l = 1; l <= 5; l++) {
-    wordData[l] = raw[l].map((w, i) => ({
-      kanji: w.k,
-      hiragana: w.h,
-      korean: w.ko,
-      level: w.l,
-      example: w.e || null,
-      exampleKorean: w.ek || null,
-      mem: false,
-      flag: false,
+    wordData[l] = raw[l].map(w => ({
+      kanji: w.k, hiragana: w.h, korean: w.ko, level: w.l,
+      example: w.e || null, exampleKorean: w.ek || null,
+      mem: false, flag: false,
     }));
   }
-  restoreAllProgress();
+}
+
+// ============================================================
+// PROGRESS SAVE/LOAD — mirrors _saveProgress / _loadProgress
+// Uses kanji as key (matching Flutter), NOT index
+// ============================================================
+function saveProgress() {
+  const prog = {};
+  for (let l = 1; l <= 5; l++) {
+    const p = {};
+    (wordData[l]||[]).forEach(w => {
+      if (w.mem || w.flag) p[w.kanji] = { m: w.mem, f: w.flag };
+    });
+    prog[l] = p;
+  }
+  const data = {
+    level: S.level, batchSize: S.batchSize, isKo: S.isKo,
+    soundEnabled: S.soundEnabled,
+    kanjiFontSize: S.kanjiFontSize, meaningFontSize: S.meaningFontSize,
+    exampleFontSize: S.exampleFontSize,
+    completionCount: S.completionCount, progress: prog,
+    // NOTE: batchStart is NOT saved (matches Flutter behavior)
+  };
+  try { localStorage.setItem('jlpt', JSON.stringify(data)); } catch(e) {}
+}
+
+function loadProgress() {
+  try {
+    const d = JSON.parse(localStorage.getItem('jlpt'));
+    if (!d) return;
+    S.level = d.level || 5;
+    S.batchSize = d.batchSize || 50;
+    S.isKo = d.isKo !== undefined ? d.isKo : true;
+    S.soundEnabled = d.soundEnabled !== undefined ? d.soundEnabled : true;
+    S.kanjiFontSize = d.kanjiFontSize || 30;
+    S.meaningFontSize = d.meaningFontSize || 20;
+    S.exampleFontSize = d.exampleFontSize || 18;
+    S.completionCount = d.completionCount || {};
+    S._savedProgress = d.progress || {};
+  } catch(e) {}
 }
 
 function restoreAllProgress() {
+  const prog = S._savedProgress || {};
   for (let l = 1; l <= 5; l++) {
-    const saved = state.progress[l] || {};
-    wordData[l].forEach((w, i) => {
-      if (saved[i]) {
-        w.mem = saved[i].m || false;
-        w.flag = saved[i].f || false;
-      }
+    const p = prog[l] || {};
+    (wordData[l]||[]).forEach(w => {
+      const s = p[w.kanji];
+      if (s) { w.mem = s.m || false; w.flag = s.f || false; }
     });
   }
+  delete S._savedProgress;
 }
 
-// ========== LEVEL / BATCH ==========
-function setLevel(level, skipSave, restoreBatch) {
-  state.level = level;
-  if (!restoreBatch) state.batchStart = 0;
-  state.bookmarkMode = false;
-  refreshSession();
-  if (!skipSave) saveProgress();
-  renderLevelBar();
-  renderStageBar();
-  updateUI();
+// ============================================================
+// LEVEL / BATCH — mirrors setLevel, goToNextBatch, etc.
+// ============================================================
+function setLevel(level) {
+  S.level = level;
+  S.batchStart = 0;       // _loadWordsForLevel always resets
+  S.studyMode = 'all';
+  refreshWords();
+  saveProgress();
+  renderAll();
 }
 
-function getAllWords() {
-  return wordData[state.level] || [];
-}
+function getAllWords() { return wordData[S.level] || []; }
 
 function getBatchWords() {
   const all = getAllWords();
-  const end = Math.min(state.batchStart + state.batchSize, all.length);
-  return all.slice(state.batchStart, end);
+  return all.slice(S.batchStart, Math.min(S.batchStart + S.batchSize, all.length));
 }
 
-function totalBatches() {
-  return Math.ceil(getAllWords().length / state.batchSize);
-}
-
-function currentBatch() {
-  return Math.floor(state.batchStart / state.batchSize) + 1;
-}
+function totalBatches() { return Math.ceil(getAllWords().length / S.batchSize); }
+function currentBatch() { return Math.floor(S.batchStart / S.batchSize) + 1; }
 
 function goToNextBatch() {
-  const all = getAllWords();
-  if (state.batchStart + state.batchSize < all.length) {
-    state.batchStart += state.batchSize;
-    state.bookmarkMode = false;
-    refreshSession();
-    saveProgress();
-    renderStageBar();
-    updateUI();
+  if (S.batchStart + S.batchSize < getAllWords().length) {
+    S.batchStart += S.batchSize;
+    S.studyMode = 'all';
+    refreshWords(); renderAll();
   }
 }
-
 function goToPrevBatch() {
-  if (state.batchStart > 0) {
-    state.batchStart -= state.batchSize;
-    state.bookmarkMode = false;
-    refreshSession();
-    saveProgress();
-    renderStageBar();
-    updateUI();
+  if (S.batchStart > 0) {
+    S.batchStart -= S.batchSize;
+    S.studyMode = 'all';
+    refreshWords(); renderAll();
   }
 }
-
-function goToBatch(index) {
-  state.batchStart = index * state.batchSize;
-  state.bookmarkMode = false;
-  refreshSession();
-  saveProgress();
-  renderStageBar();
-  updateUI();
+function goToBatch(i) {
+  S.batchStart = i * S.batchSize;
+  S.studyMode = 'all';  // matches goToBatch in Flutter
+  refreshWords(); renderAll();
 }
-
 function setBatchSize(size) {
-  state.batchSize = size;
-  state.batchStart = 0;
-  refreshSession();
-  saveProgress();
-  renderStageBar();
-  renderSettings();
-  updateUI();
+  S.batchSize = size;
+  S.batchStart = 0;
+  refreshWords(); saveProgress(); renderAll();
 }
 
-// ========== SESSION ==========
-function refreshSession() {
-  if (state.bookmarkMode) {
-    // All flagged words across all levels
+// ============================================================
+// SESSION — mirrors _refreshWords
+// ============================================================
+function refreshWords() {
+  if (S.studyMode === 'flagged') {
+    // Flutter: _allLevelWords.where((w) => w.isFlagged)
     let flagged = [];
-    for (let l = 1; l <= 5; l++) {
-      flagged = flagged.concat((wordData[l] || []).filter(w => w.flag));
-    }
-    state.sessionWords = flagged;
+    for (let l = 1; l <= 5; l++) flagged = flagged.concat((wordData[l]||[]).filter(w => w.flag));
+    S.sessionWords = flagged;
   } else {
-    const batch = getBatchWords();
-    state.sessionWords = batch.filter(w => !w.mem);
+    S.sessionWords = getBatchWords().filter(w => !w.mem);
   }
-  state.currentIndex = 0;
-  state.answerVisible = false;
+  S.idx = 0;
+  S.answerVisible = false;
 }
 
-function currentWord() {
-  if (!state.sessionWords.length || state.currentIndex >= state.sessionWords.length) return null;
-  return state.sessionWords[state.currentIndex];
+function curWord() {
+  return S.sessionWords.length && S.idx < S.sessionWords.length ? S.sessionWords[S.idx] : null;
 }
 
-// ========== ACTIONS ==========
-function handleCardTap(e) {
-  if (e.target.closest('.bookmark-overlay') || e.target.closest('.vol-btn') || e.target.closest('.example-area')) return;
-  if (!state.answerVisible) {
+// ============================================================
+// STUDY MODE — mirrors setStudyMode
+// ============================================================
+function setStudyMode(mode) {
+  S.studyMode = mode;
+  refreshWords(); renderAll();
+}
+function toggleStudyMode() {
+  setStudyMode(S.studyMode === 'all' ? 'flagged' : 'all');
+}
+
+// ============================================================
+// CARD ACTIONS — mirrors showAnswer, markMemorized, etc.
+// ============================================================
+function onCardTap(e) {
+  if (e.target.closest('.bm-overlay') || e.target.closest('.vol-btn') || e.target.closest('.ex-area')) return;
+  if (!S.answerVisible) {
     showAnswer();
   } else {
-    if (state.soundEnabled) speakText(currentWord()?.hiragana);
+    // Flutter: tap when visible → speak hiragana
+    if (S.soundEnabled && curWord()) speak(curWord().hiragana);
   }
 }
 
 function showAnswer() {
-  state.answerVisible = true;
-  const w = currentWord();
-  if (!w) return;
-  document.getElementById('card-hiragana').classList.remove('hidden');
-  document.getElementById('card-korean').classList.remove('hidden');
-  document.getElementById('card-vol-btn').style.display = '';
-  document.getElementById('tap-hint').classList.add('hidden');
-  if (w.example) {
-    renderExample(w);
-    document.getElementById('example-area').style.display = '';
-  }
-  if (state.soundEnabled) speakText(w.hiragana);
+  S.answerVisible = true;
+  renderCard();
+  if (curWord() && S.soundEnabled) speak(curWord().hiragana);
 }
 
+// mirrors markMemorized()
 function markMemorized() {
-  const w = currentWord();
-  if (!w) return;
+  const w = curWord(); if (!w) return;
   w.mem = true;
-  w.flag = false;
+  w.flag = false;  // Flutter: currentWord!.isFlagged = false
   saveProgress();
   nextCard();
 }
 
+// mirrors markNotMemorized()
 function markNotMemorized() {
-  const w = currentWord();
-  if (!w) return;
+  const w = curWord(); if (!w) return;
   w.mem = false;
+  // Flutter: does NOT touch isFlagged
   saveProgress();
   nextCard();
 }
 
-function skipCard() {
-  nextCard();
-}
+function skipCard() { nextCard(); }
 
+// mirrors goToPrevCard()
 function goToPrevCard() {
-  if (state.currentIndex > 0) {
-    state.currentIndex--;
-    state.answerVisible = false;
-    renderProgressBar();
-    updateCard();
+  if (S.idx > 0) {
+    S.idx--;
+    S.answerVisible = false;
+    renderAll();
   }
 }
 
-function handleBadBtn() {
-  if (state.bookmarkMode) {
-    const w = currentWord();
-    if (w) toggleWordBookmark(w);
-  } else {
-    markNotMemorized();
-  }
-}
-
-function toggleBookmarkMode() {
-  state.bookmarkMode = !state.bookmarkMode;
-  refreshSession();
-  updateUI();
-}
-
-function exitBookmarkMode() {
-  state.bookmarkMode = false;
-  refreshSession();
-  updateUI();
-}
-
-function toggleCardBookmark(e) {
-  e.stopPropagation();
-  const w = currentWord();
-  if (w) toggleWordBookmark(w);
-}
-
-function toggleWordBookmark(w) {
-  w.flag = !w.flag;
-  saveProgress();
-  if (state.bookmarkMode) {
-    refreshSession();
-    if (state.currentIndex >= state.sessionWords.length) {
-      state.currentIndex = Math.max(0, state.sessionWords.length - 1);
-    }
-  }
-  updateUI();
-}
-
+// mirrors _nextCard() — the most complex function
 function nextCard() {
-  state.answerVisible = false;
-  if (state.currentIndex < state.sessionWords.length - 1) {
-    state.currentIndex++;
-    renderProgressBar();
-    updateCard();
+  S.answerVisible = false;
+  if (S.idx < S.sessionWords.length - 1) {
+    S.idx++;
+    renderAll();
     return;
   }
-  // End of session
-  if (state.bookmarkMode) {
-    const batchAll = state.sessionWords;
-    const allMem = batchAll.every(w => w.mem);
+  // ── Last card reached ──
+  if (S.studyMode === 'flagged') {
+    const allMem = getBatchWords().every(w => w.mem);
     if (allMem) {
       bumpCompletion();
-      batchAll.forEach(w => w.mem = false);
-      state.bookmarkMode = false;
-      refreshSession();
-      updateUI();
+      getBatchWords().forEach(w => w.mem = false);
+      S.studyMode = 'all';
+      refreshWords(); saveProgress(); renderAll();
       showCompletionDialog();
     } else {
-      refreshSession();
-      updateUI();
+      refreshWords(); renderAll();
     }
     return;
   }
-  const batchWords = getBatchWords();
-  const allMem = batchWords.every(w => w.mem);
+  // All mode
+  const allMem = getBatchWords().every(w => w.mem);
   if (allMem) {
     bumpCompletion();
-    batchWords.forEach(w => w.mem = false);
-    saveProgress();
-    refreshSession();
-    updateUI();
+    getBatchWords().forEach(w => w.mem = false);
+    refreshWords(); saveProgress(); renderAll();
     showCompletionDialog();
   } else {
-    refreshSession();
-    if (state.sessionWords.length) state.sessionWords.sort(() => Math.random() - 0.5);
-    updateUI();
-    showRoundDialog();
+    refreshWords();
+    if (S.sessionWords.length) S.sessionWords.sort(() => Math.random() - 0.5);
+    renderAll();
+    showRoundCompleteDialog();
   }
 }
 
 function bumpCompletion() {
-  const key = `N${state.level}_${state.batchStart}`;
-  state.completionCount[key] = (state.completionCount[key] || 0) + 1;
+  const key = `N${S.level}_batch${S.batchStart}`;
+  S.completionCount[key] = (S.completionCount[key] || 0) + 1;
   saveProgress();
 }
-
-function currentCompletionCount() {
-  return state.completionCount[`N${state.level}_${state.batchStart}`] || 0;
+function getCurCompletion() {
+  return S.completionCount[`N${S.level}_batch${S.batchStart}`] || 0;
 }
 
+// mirrors shuffleSession()
 function shuffleSession() {
-  const notMem = state.sessionWords.filter(w => !w.mem);
-  notMem.sort(() => Math.random() - 0.5);
-  state.sessionWords = notMem;
-  state.currentIndex = 0;
-  state.answerVisible = false;
-  renderProgressBar();
-  updateCard();
+  S.sessionWords = S.sessionWords.filter(w => !w.mem);
+  S.sessionWords.sort(() => Math.random() - 0.5);
+  S.idx = 0;
+  S.answerVisible = false;
+  renderAll();
+}
+
+// mirrors studyRemainingWords()
+function studyRemainingWords() {
+  S.sessionWords = getBatchWords().filter(w => !w.mem);
+  S.sessionWords.sort(() => Math.random() - 0.5);
+  S.idx = 0;
+  S.answerVisible = false;
+  renderAll();
+}
+
+// mirrors resetBatchProgress()
+function resetBatch() {
+  getBatchWords().forEach(w => { w.mem = false; w.flag = false; });
+  saveProgress(); refreshWords(); renderAll();
 }
 
 function confirmReset() {
-  const isKo = state.isKo;
-  document.getElementById('dialog').dataset.forced = '';
-  showDialog('⚠️',
-    isKo ? '현재 스테이지 초기화' : '現在ステージリセット',
-    isKo ? '현재 스테이지의 외움/못외움을 전부 초기화합니다.' : '現在ステージの学習記録をリセットします。',
-    [
-      { label: isKo ? '취소' : 'キャンセル', cls: 'blue', action: closeDialog },
-      { label: isKo ? '초기화' : 'リセット', cls: 'red', action: () => { closeDialog(); resetBatch(); } }
-    ]
+  const k = S.isKo;
+  dlgDismissable = true;
+  showDlg('⚠️', k?'현재 스테이지 초기화':'現在ステージリセット',
+    k?'현재 스테이지의 학습 기록을 초기화할까요?\n(외움 / 못외움 전부 초기화)':'現在ステージの学習記録をリセットしますか？',
+    [{l:k?'취소':'キャンセル',c:'blue',fn:closeDlg},{l:k?'초기화':'リセット',c:'red',fn:()=>{closeDlg();resetBatch();}}]
   );
 }
 
-function resetBatch() {
-  getBatchWords().forEach(w => { w.mem = false; w.flag = false; });
+// ============================================================
+// BOOKMARK — mirrors toggleBookmark
+// ============================================================
+function toggleBookmark(w) {
+  w.flag = !w.flag;
   saveProgress();
-  refreshSession();
-  updateUI();
+  if (S.studyMode === 'flagged') {
+    // Flutter: rebuild session, clamp index
+    let flagged = [];
+    for (let l = 1; l <= 5; l++) flagged = flagged.concat((wordData[l]||[]).filter(x => x.flag));
+    S.sessionWords = flagged;
+    S.idx = Math.min(S.idx, Math.max(0, S.sessionWords.length - 1));
+  }
+  renderAll();
+}
+function toggleCardBm(e) { e.stopPropagation(); const w = curWord(); if (w) toggleBookmark(w); }
+function onBadBtn() {
+  if (S.studyMode === 'flagged') { const w = curWord(); if (w) toggleBookmark(w); }
+  else markNotMemorized();
 }
 
-// ========== RENDER ==========
-function updateUI() {
-  renderLevelBar();
-  renderProgressBar();
-  updateCard();
-  renderBadBtn();
-  renderTopBadges();
+// ============================================================
+// TTS — mirrors speak(), _initTts
+// ============================================================
+function speak(text) {
+  if (!S.soundEnabled || !text || isSpeaking) return;
+  isSpeaking = true;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP'; u.rate = 0.85; u.volume = 1;
+  u.onend = () => { isSpeaking = false; };
+  u.onerror = () => { isSpeaking = false; };
+  window.speechSynthesis.speak(u);
+}
+function speakHira(e) { e.stopPropagation(); const w = curWord(); if (w && S.soundEnabled) speak(w.hiragana); }
+function speakEx(e) {
+  e.stopPropagation();
+  const w = curWord();
+  if (!w || !w.example || !S.soundEnabled) return;
+  // Flutter exact regex: replaces kanji(hiragana) → hiragana, keeps rest
+  const clean = w.example.replace(
+    /[\u4e00-\u9faf\u30A0-\u30FF][\u4e00-\u9faf\u3040-\u309f\u30A0-\u30FF]*[\(（]([^)）]+)[\)）]/g, '$1'
+  );
+  speak(clean);
+}
+function toggleSound() {
+  S.soundEnabled = !S.soundEnabled;
+  if (!S.soundEnabled) window.speechSynthesis.cancel();
+  saveProgress(); renderTitlebar(); renderSettingsPanel();
+}
+function toggleLang() { S.isKo = !S.isKo; saveProgress(); renderAll(); }
+
+// ============================================================
+// SWIPE — mirrors onHorizontalDragEnd
+// ============================================================
+function tsStart(e) { touchSX = e.touches[0].clientX; touchSY = e.touches[0].clientY; }
+function tsEnd(e) {
+  const dx = e.changedTouches[0].clientX - touchSX;
+  const dy = e.changedTouches[0].clientY - touchSY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+    if (dx < 0) markNotMemorized(); else markMemorized();
+  }
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+function renderAll() {
+  renderTitlebar(); renderLevelBar(); renderStageBar();
+  renderProgressBar(); renderCard(); renderActions();
+  renderSettingsPanel(); renderStatsPanel();
+}
+
+function renderTitlebar() {
+  document.getElementById('app-title').textContent = S.isKo ? '일본어 단어장' : '日本語 単語帳';
+  document.title = S.isKo ? '일본어 단어장' : '日本語 単語帳';
+  document.getElementById('lang-btn').textContent = S.isKo ? 'KO' : 'JP';
+  const btn = document.getElementById('sound-btn');
+  btn.classList.toggle('muted', !S.soundEnabled);
+  document.getElementById('sound-icon').innerHTML = S.soundEnabled
+    ? '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>'
+    : '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
 }
 
 function renderLevelBar() {
-  document.querySelectorAll('.lvl-btn').forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.dataset.l) === state.level);
-  });
-  // Bookmark mode btn
-  const bookmarkBtn = document.getElementById('bookmark-mode-btn');
-  bookmarkBtn.classList.toggle('active', state.bookmarkMode);
-  // Total flagged count
-  let totalFlag = 0;
-  for (let l = 1; l <= 5; l++) totalFlag += (wordData[l] || []).filter(w => w.flag).length;
-  document.getElementById('total-flag-count').textContent = totalFlag;
+  document.querySelectorAll('.lvl-btn').forEach(b => b.classList.toggle('active', +b.dataset.l === S.level));
+  const bmBtn = document.getElementById('bm-mode-btn');
+  bmBtn.classList.toggle('active', S.studyMode === 'flagged');
+  // Flutter: flaggedCount = ALL levels flagged
+  let fc = 0; for (let l = 1; l <= 5; l++) fc += (wordData[l]||[]).filter(w => w.flag).length;
+  document.getElementById('total-flag-count').textContent = fc;
+  // Update icon to filled when active
+  bmBtn.querySelector('svg').innerHTML = S.studyMode === 'flagged'
+    ? '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="currentColor"/>'
+    : '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>';
 }
 
 function renderStageBar() {
-  const scroll = document.getElementById('stage-scroll');
-  const total = totalBatches();
-  const cur = currentBatch();
-  const isKo = state.isKo;
-  let html = '';
-  for (let i = 0; i < total; i++) {
-    const active = i + 1 === cur ? 'active' : '';
-    html += `<button class="stage-btn ${active}" onclick="goToBatch(${i})">${isKo ? '스테이지' : 'ステージ'} ${String(i+1).padStart(2,'0')}</button>`;
-  }
-  scroll.innerHTML = html;
-  // Scroll active into view
-  setTimeout(() => {
-    const active = scroll.querySelector('.stage-btn.active');
-    if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }, 50);
+  const sc = document.getElementById('stage-scroll');
+  const tb = totalBatches(), cb = currentBatch(), k = S.isKo;
+  let h = '';
+  for (let i = 0; i < tb; i++)
+    h += `<button class="stage-btn ${i+1===cb?'active':''}" onclick="goToBatch(${i})">${k?'스테이지':'ステージ'} ${String(i+1).padStart(2,'0')}</button>`;
+  sc.innerHTML = h;
+  setTimeout(() => { const a = sc.querySelector('.active'); if (a) a.scrollIntoView({behavior:'smooth',inline:'start',block:'nearest'}); }, 50);
 }
 
 function renderProgressBar() {
-  const batch = getBatchWords();
-  const total = batch.length;
+  const batch = getBatchWords(), tot = batch.length;
   const mem = batch.filter(w => w.mem).length;
-  const flag = batch.filter(w => w.flag).length;
-  const pct = total > 0 ? mem / total : 0;
-  document.getElementById('pbar-fill').style.width = (pct * 100) + '%';
-  document.getElementById('prog-mem').textContent = mem;
-  document.getElementById('prog-total').textContent = total;
-  document.getElementById('prog-flag').textContent = flag;
-  document.getElementById('prog-flag-wrap').style.display = flag > 0 ? '' : 'none';
-
-  const prevBatchBtn = document.getElementById('prev-batch-btn');
-  const nextBatchBtn = document.getElementById('next-batch-btn');
-  prevBatchBtn.disabled = state.batchStart === 0;
-  nextBatchBtn.disabled = state.batchStart + state.batchSize >= getAllWords().length;
+  // Flutter: flagged from allWordsForLevel (entire level)
+  const flag = getAllWords().filter(w => w.flag).length;
+  const pct = tot > 0 ? mem / tot : 0;
+  document.getElementById('pbar-fill').style.width = (pct*100)+'%';
+  document.getElementById('p-mem').textContent = mem;
+  document.getElementById('p-tot').textContent = tot;
+  document.getElementById('p-flag').textContent = flag;
+  document.getElementById('p-flag-wrap').style.display = flag > 0 ? '' : 'none';
+  document.getElementById('prev-batch').disabled = S.batchStart === 0;
+  document.getElementById('next-batch').disabled = S.batchStart + S.batchSize >= getAllWords().length;
   document.getElementById('batch-num').textContent = `${currentBatch()}/${totalBatches()}`;
 }
 
-function updateCard() {
-  const w = currentWord();
-  const isEmpty = !w;
-  document.getElementById('flashcard').style.display = isEmpty ? 'none' : '';
-  document.getElementById('empty-state').style.display = isEmpty ? 'flex' : 'none';
-  document.getElementById('actions').style.display = isEmpty ? 'none' : '';
-  if (isEmpty) {
-    document.getElementById('empty-text').textContent = state.bookmarkMode
-      ? (state.isKo ? '북마크한 단어가 없습니다' : 'ブックマークした単語がありません')
-      : (state.isKo ? '이 레벨에 단어가 없습니다' : 'この레벨に単語がありません');
-    document.getElementById('card-counter-text').textContent = '0 / 0';
+function renderCard() {
+  const w = curWord(), empty = !w;
+  document.getElementById('flashcard').style.display = empty ? 'none' : '';
+  document.getElementById('empty-state').style.display = empty ? 'flex' : 'none';
+  document.getElementById('actions').style.display = empty ? 'none' : '';
+  const isFlagged = S.studyMode === 'flagged';
+  if (empty) {
+    document.getElementById('empty-txt').textContent = isFlagged
+      ? (S.isKo?'북마크한 단어가 없습니다':'ブックマークした単語がありません')
+      : (S.isKo?'이 레벨에 단어가 없습니다':'このレベルに単語がありません');
+    document.getElementById('empty-switch').style.display = isFlagged ? '' : 'none';
+    document.getElementById('empty-switch').textContent = S.isKo ? '전체 모드로 전환' : '全体モードに切替';
+    document.getElementById('fc-counter-txt').textContent = '0 / 0';
     return;
   }
-
-  // Card counter
-  document.getElementById('card-counter-text').textContent = `${state.currentIndex + 1} / ${state.sessionWords.length}`;
-  const modeBadge = document.getElementById('mode-badge');
-  modeBadge.style.display = state.bookmarkMode ? '' : 'none';
-  modeBadge.textContent = state.isKo ? '북마크' : 'ブックマーク';
-
-  const batchFlag = getBatchWords().filter(x => x.flag).length;
-  document.getElementById('batch-flag-num').textContent = batchFlag;
+  // Counter
+  document.getElementById('fc-counter-txt').textContent = `${S.idx+1} / ${S.sessionWords.length}`;
+  const mb = document.getElementById('fc-mode-badge');
+  mb.style.display = isFlagged ? '' : 'none';
+  mb.textContent = S.isKo ? '북마크' : 'ブックマーク';
+  // currentBatchFlaggedCount
+  document.getElementById('fc-bm-num').textContent = getBatchWords().filter(x => x.flag).length;
 
   // Level badge
-  const levelColors = {1:'var(--n1)',2:'var(--n2)',3:'var(--n3)',4:'var(--n4)',5:'var(--n5)'};
-  const badge = document.getElementById('card-level-badge');
-  badge.textContent = `N${w.level}`;
-  badge.style.color = levelColors[w.level];
-  badge.style.background = levelColors[w.level] + '33';
-  badge.style.border = `1px solid ${levelColors[w.level]}88`;
+  const lc = {1:'var(--n1)',2:'var(--n2)',3:'var(--n3)',4:'var(--n4)',5:'var(--n5)'};
+  const badge = document.getElementById('c-lv-badge');
+  badge.textContent = `N${w.level}`; badge.style.color = lc[w.level];
+  badge.style.background = lc[w.level]+'33'; badge.style.border = `1px solid ${lc[w.level]}88`;
 
   // Kanji
-  document.getElementById('card-kanji').textContent = w.kanji;
-  document.getElementById('card-kanji').style.fontSize = state.kanjiFontSize + 'px';
+  const kEl = document.getElementById('c-kanji');
+  kEl.textContent = w.kanji; kEl.style.fontSize = S.kanjiFontSize+'px';
 
-  // Answer visibility
-  const hira = document.getElementById('card-hiragana');
-  const ko = document.getElementById('card-korean');
-  const volBtn = document.getElementById('card-vol-btn');
-  const tapHint = document.getElementById('tap-hint');
-  const exArea = document.getElementById('example-area');
+  // Hiragana & Korean
+  const hira = document.getElementById('c-hira');
+  hira.textContent = w.hiragana; hira.style.fontSize = (S.meaningFontSize*0.9)+'px';
+  const ko = document.getElementById('c-ko');
+  ko.textContent = w.korean; ko.style.fontSize = S.meaningFontSize+'px';
+  const vol = document.getElementById('c-vol');
+  const th = document.getElementById('c-tap-hint');
+  const ex = document.getElementById('c-ex-area');
 
-  hira.textContent = w.hiragana;
-  hira.style.fontSize = (state.meaningFontSize * 0.9) + 'px';
-  ko.textContent = w.korean;
-  ko.style.fontSize = state.meaningFontSize + 'px';
-
-  if (state.answerVisible) {
-    hira.classList.remove('hidden');
-    ko.classList.remove('hidden');
-    volBtn.style.display = '';
-    tapHint.classList.add('hidden');
-    if (w.example) {
-      renderExample(w);
-      exArea.style.display = '';
-    } else {
-      exArea.style.display = 'none';
-    }
+  if (S.answerVisible) {
+    hira.classList.remove('hidden'); ko.classList.remove('hidden');
+    vol.style.display = '';
+    th.classList.add('hidden');
+    if (w.example) { renderExample(w); ex.style.display = ''; } else ex.style.display = 'none';
   } else {
-    hira.classList.add('hidden');
-    ko.classList.add('hidden');
-    volBtn.style.display = 'none';
-    tapHint.classList.remove('hidden');
-    tapHint.textContent = state.isKo ? '탭하여 뜻 보기' : 'タップして答えを見る';
-    exArea.style.display = 'none';
+    hira.classList.add('hidden'); ko.classList.add('hidden');
+    vol.style.display = 'none';
+    th.classList.remove('hidden');
+    th.textContent = S.isKo ? '탭하여 뜻 보기' : 'タップして答えを見る';
+    ex.style.display = 'none';
   }
 
-  // Bookmark
-  const bookmarkEl = document.getElementById('card-bookmark');
-  bookmarkEl.classList.toggle('flagged', w.flag);
-  bookmarkEl.innerHTML = w.flag
-    ? `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
-    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-}
-
-function renderBadBtn() {
-  const btn = document.getElementById('bad-btn');
-  const label = document.getElementById('bad-label');
-  const isKo = state.isKo;
-  if (state.bookmarkMode) {
-    btn.classList.add('bookmark-mode');
-    label.textContent = isKo ? '북마크 해제' : 'ブックマーク解除';
-    btn.querySelector('svg').innerHTML = `<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>`;
-  } else {
-    btn.classList.remove('bookmark-mode');
-    label.textContent = isKo ? '못 외움' : '覚えてない';
-    btn.querySelector('svg').innerHTML = `<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>`;
-  }
-  document.getElementById('good-label').textContent = isKo ? '외움' : '覚えた';
-}
-
-function renderTopBadges() {
-  document.getElementById('mode-badge').textContent = state.isKo ? '북마크' : 'ブックマーク';
+  // Bookmark overlay
+  const bm = document.getElementById('c-bm');
+  bm.classList.toggle('flagged', w.flag);
+  bm.innerHTML = w.flag
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
 }
 
 function renderExample(w) {
-  const rubyWrap = document.getElementById('example-ruby');
-  rubyWrap.style.fontSize = state.exampleFontSize + 'px';
-  rubyWrap.innerHTML = parseRuby(w.example, state.exampleFontSize);
-  const koEl = document.getElementById('example-ko');
-  koEl.textContent = w.exampleKorean || '';
-  koEl.style.fontSize = (state.exampleFontSize * 0.85) + 'px';
+  const rw = document.getElementById('c-ex-ruby');
+  rw.style.fontSize = S.exampleFontSize+'px';
+  rw.innerHTML = parseRuby(w.example, S.exampleFontSize);
+  const ke = document.getElementById('c-ex-ko');
+  ke.textContent = w.exampleKorean || '';
+  ke.style.fontSize = (S.exampleFontSize*0.85)+'px';
 }
 
-function parseRuby(text, baseSize) {
-  const rubySize = baseSize * 0.65;
-  const parts = [];
-  const re = /([^(（]+?)[\(（]([^)）]+?)[\)）]|([^(（]+)/g;
+// mirrors ruby_text_widget.dart _parse
+function parseRuby(text, sz) {
+  const rsz = sz * 0.7; // Flutter: exampleFontSize * 0.7
+  const parts = [], re = /([^(（]+?)[\(（]([^)）]+?)[\)）]|([^(（]+)/g;
   let m;
   while ((m = re.exec(text)) !== null) {
-    if (m[1] && m[2]) {
-      parts.push(`<span class="ruby-unit"><span class="rt" style="font-size:${rubySize}px">${m[2]}</span><span class="rb">${m[1]}</span></span>`);
-    } else if (m[3]) {
-      parts.push(`<span class="ruby-unit"><span class="rt" style="font-size:${rubySize}px"> </span><span class="rb">${m[3]}</span></span>`);
-    }
+    if (m[1] && m[2])
+      parts.push(`<span class="ruby-unit"><span class="rt" style="font-size:${rsz}px">${m[2]}</span><span class="rb">${m[1]}</span></span>`);
+    else if (m[3])
+      parts.push(`<span class="ruby-unit"><span class="rt" style="font-size:${rsz}px">&nbsp;</span><span class="rb">${m[3]}</span></span>`);
   }
   return parts.join('');
 }
 
-// ========== SETTINGS RENDER ==========
-function renderSettings() {
-  // batch size chips
-  document.querySelectorAll('#batch-size-chips .chip').forEach(c => {
-    c.classList.toggle('active', parseInt(c.dataset.size) === state.batchSize);
-  });
-  // lang chips
-  document.getElementById('lang-ko-chip').classList.toggle('active', state.isKo);
-  document.getElementById('lang-jp-chip').classList.toggle('active', !state.isKo);
-  // sound toggle
-  const st = document.getElementById('sound-toggle');
-  st.classList.toggle('on', state.soundEnabled);
-  document.getElementById('sound-toggle-label').textContent = state.soundEnabled
-    ? (state.isKo ? '발음 듣기 켜짐' : '発音オン')
-    : (state.isKo ? '발음 듣기 꺼짐' : '発音オフ');
-  // font slider
-  updateFontSlider();
-  // preview
-  updatePreview();
-  // UI text
-  updateUIText();
+function renderActions() {
+  const k = S.isKo, fm = S.studyMode === 'flagged';
+  const bad = document.getElementById('btn-bad');
+  bad.classList.toggle('bm-mode', fm);
+  document.getElementById('btn-bad-lbl').textContent = fm
+    ? (k?'북마크 해제':'ブックマーク解除') : (k?'못 외움':'覚えてない');
+  document.getElementById('btn-good-lbl').textContent = k?'외움':'覚えた';
+  document.getElementById('lbl-stats').textContent = k?'통계':'統計';
+  document.getElementById('lbl-settings').textContent = k?'설정':'設定';
 }
 
-function updateFontSlider() {
-  const slider = document.getElementById('font-slider');
-  const val = document.getElementById('font-val');
-  const fa = state.fontArea;
-  if (fa === 0) { slider.min = 24; slider.max = 56; slider.step = 2; slider.value = state.kanjiFontSize; val.textContent = state.kanjiFontSize + 'px'; }
-  else if (fa === 1) { slider.min = 12; slider.max = 32; slider.step = 2; slider.value = state.meaningFontSize; val.textContent = state.meaningFontSize + 'px'; }
-  else { slider.min = 8; slider.max = 20; slider.step = 1; slider.value = state.exampleFontSize; val.textContent = state.exampleFontSize + 'px'; }
-}
-
-function setFontArea(fa) {
-  state.fontArea = fa;
-  document.querySelectorAll('#font-area-chips .chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.fa) === fa));
-  updateFontSlider();
-  updatePreview();
-}
-
-function onFontSlide(v) {
-  const size = parseFloat(v);
-  if (state.fontArea === 0) state.kanjiFontSize = size;
-  else if (state.fontArea === 1) state.meaningFontSize = size;
-  else state.exampleFontSize = size;
-  document.getElementById('font-val').textContent = size + 'px';
-  updatePreview();
-  updateCard();
-  saveProgress();
-}
-
-function updatePreview() {
-  const fa = state.fontArea;
-  document.getElementById('prev-kanji').style.fontSize = state.kanjiFontSize + 'px';
-  document.getElementById('prev-kanji').style.opacity = fa === 0 ? 1 : 0.4;
-  document.getElementById('prev-hira').style.fontSize = (state.meaningFontSize * 0.9) + 'px';
-  document.getElementById('prev-hira').style.opacity = fa === 1 ? 1 : 0.4;
-  document.getElementById('prev-ko').style.fontSize = state.meaningFontSize + 'px';
-  document.getElementById('prev-ko').style.opacity = fa === 1 ? 1 : 0.4;
-  document.getElementById('prev-ex').style.fontSize = state.exampleFontSize + 'px';
-  document.getElementById('prev-ex').style.opacity = fa === 2 ? 1 : 0.3;
-}
-
-function updateUIText() {
-  const isKo = state.isKo;
-  document.getElementById('app-title').textContent = isKo ? '일본어 단어장' : '日本語 単語帳';
-  document.title = isKo ? '일본어 단어장' : '日本語 単語帳';
-  document.getElementById('lang-btn').textContent = isKo ? 'KO' : 'JP';
-  document.getElementById('stats-label').textContent = isKo ? '통계' : '統計';
-  document.getElementById('settings-label').textContent = isKo ? '설정' : '設定';
-  document.getElementById('settings-title').textContent = isKo ? '설정' : '設定';
-  document.getElementById('stats-title').textContent = isKo ? '학습 통계' : '学習統計';
-  document.getElementById('set-stage-size-label').textContent = isKo ? '스테이지 크기' : 'ステージサイズ';
-  document.getElementById('set-ui-lang-label').textContent = isKo ? 'UI 언어' : 'UI言語';
-  document.getElementById('set-sound-label').textContent = isKo ? '발음 듣기' : '発音を聞く';
-  document.getElementById('set-font-label').textContent = isKo ? '글씨 크기' : '文字サイズ';
-  document.getElementById('fa0').textContent = isKo ? '한자' : '漢字';
-  document.getElementById('fa1').textContent = isKo ? '발음/뜻' : '読み/意味';
-  document.getElementById('fa2').textContent = isKo ? '예문' : '例文';
-  document.getElementById('tip-title-text').textContent = isKo ? '사용 팁' : '使い方のヒント';
-  document.getElementById('tip-text').innerHTML = isKo
-    ? '• 좌우 스와이프로 외움/못 외움 표시<br>• 헷갈리는 단어는 🔖 버튼으로 복습<br>• 스테이지를 나눠 매일 조금씩 학습'
-    : '• 左右スワイプで覚えた/覚えてないを記録<br>• 混乱しやすい単語は🔖で復習<br>• バッチに分けて毎日少しずつ学習';
-  document.getElementById('st-mem-lbl').textContent = isKo ? '외움' : '覚えた';
-  document.getElementById('st-flag-lbl').textContent = isKo ? '복습 필요' : '要復習';
-  document.getElementById('st-rem-lbl').textContent = isKo ? '미학습' : '未学習';
-  renderBadBtn();
-  renderStageBar();
-}
-
-// ========== LANG / SOUND ==========
-function toggleLang() {
-  state.isKo = !state.isKo;
-  saveProgress();
-  renderSettings();
-  updateUI();
-}
-
-function setLangKo() { if (!state.isKo) toggleLang(); }
-function setLangJp() { if (state.isKo) toggleLang(); }
-
-function toggleSound() {
-  state.soundEnabled = !state.soundEnabled;
-  const soundBtn = document.getElementById('sound-btn');
-  soundBtn.classList.toggle('muted', !state.soundEnabled);
-  document.getElementById('sound-icon').innerHTML = state.soundEnabled
-    ? `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>`
-    : `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>`;
-  saveProgress();
-  renderSettings();
-}
-
-// ========== TTS ==========
-function speakText(text) {
-  if (!state.soundEnabled || !text) return;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'ja-JP';
-  utter.rate = 0.85;
-  utter.volume = 1;
-  window.speechSynthesis.speak(utter);
-}
-
-function speakCurrent(e) {
-  e.stopPropagation();
-  const w = currentWord();
-  if (w) speakText(w.hiragana);
-}
-
-function speakExample(e) {
-  e.stopPropagation();
-  const w = currentWord();
-  if (w && w.example && state.soundEnabled) {
-    // 한자(히라가나) → 히라가나로 교체, 괄호 없는 일반 텍스트는 그대로 유지
-    const clean = w.example.replace(/[^\s\u3000-\u303f\u3040-\u309f\u30a0-\u30ff(（）)、。！？\x20-\x7e]+[\(（]([^)）]+)[\)）]/g, '$1');
-    speakText(clean);
-  }
-}
-
-// ========== PANELS ==========
+// ============================================================
+// SETTINGS PANEL — mirrors settings_panel.dart
+// ============================================================
 function showSettings() {
-  document.getElementById('settings-panel').style.display = '';
   document.getElementById('stats-panel').style.display = 'none';
-  renderSettings();
+  const p = document.getElementById('settings-panel');
+  p.style.display = p.style.display === 'none' ? '' : 'none';
+  if (p.style.display !== 'none') renderSettingsPanel();
 }
-
 function showStats() {
-  document.getElementById('stats-panel').style.display = '';
   document.getElementById('settings-panel').style.display = 'none';
-  renderStatsPanel();
+  const p = document.getElementById('stats-panel');
+  p.style.display = p.style.display === 'none' ? '' : 'none';
+  if (p.style.display !== 'none') renderStatsPanel();
 }
-
 function closePanel() {
   document.getElementById('settings-panel').style.display = 'none';
   document.getElementById('stats-panel').style.display = 'none';
 }
 
-function renderStatsPanel() {
-  const batch = getBatchWords();
-  const total = batch.length;
-  const mem = batch.filter(w => w.mem).length;
-  const flag = batch.filter(w => w.flag).length;
-  const rem = total - mem - flag;
-  const pct = total > 0 ? Math.round(mem / total * 100) : 0;
-  const isKo = state.isKo;
+function renderSettingsPanel() {
+  const p = document.getElementById('settings-panel');
+  if (p.style.display === 'none') return;
+  const k = S.isKo;
+  const bsChips = [10,20,30,50,100].map(s =>
+    `<div class="chip ${S.batchSize===s?'active':''}" onclick="setBatchSize(${s})">${s}</div>`).join('');
+  const faChips = [{v:0,l:k?'한자':'漢字'},{v:1,l:k?'발음/뜻':'読み/意味'},{v:2,l:k?'예문':'例文'}].map(x =>
+    `<div class="chip ${S.fontArea===x.v?'active':''}" onclick="setFontArea(${x.v})">${x.l}</div>`).join('');
+  const sliderConf = S.fontArea===0?{min:24,max:56,val:S.kanjiFontSize}:S.fontArea===1?{min:12,max:32,val:S.meaningFontSize}:{min:8,max:20,val:S.exampleFontSize};
 
-  document.getElementById('stats-cur-label').textContent = isKo
-    ? `N${state.level} 현재 배치` : `N${state.level} 現在のバッチ`;
-  document.getElementById('st-mem').textContent = mem;
-  document.getElementById('st-flag').textContent = flag;
-  document.getElementById('st-rem').textContent = rem;
-  document.getElementById('st-pbar').style.width = pct + '%';
-  document.getElementById('st-pct').textContent = isKo ? `배치 완성도 ${pct}%` : `バッチ完成度 ${pct}%`;
-  document.getElementById('stats-all-label').textContent = isKo ? '레벨별 전체 현황' : 'レベル別全体状況';
-
-  const levelColors = {1:'var(--n1)',2:'var(--n2)',3:'var(--n3)',4:'var(--n4)',5:'var(--n5)'};
-  let html = '';
-  for (let l = 5; l >= 1; l--) {
-    const words = wordData[l] || [];
-    const t = words.length;
-    const m = words.filter(w => w.mem).length;
-    const f = words.filter(w => w.flag).length;
-    const p = t > 0 ? m / t : 0;
-    const isCur = l === state.level;
-    html += `<div class="level-stat-row ${isCur ? 'current' : ''}">
-      <div class="level-badge-sm" style="background:${levelColors[l]}33;color:${levelColors[l]}">N${l}</div>
-      <div class="lsr-info">
-        <div class="lsr-nums">
-          <span>${m} / ${t}</span>
-          ${f > 0 ? `<span style="margin-left:6px;color:rgba(231,76,60,0.7);font-size:10px">🔖 ${f}</span>` : ''}
-          <span class="lsr-pct" style="color:${levelColors[l]}">${Math.round(p*100)}%</span>
-        </div>
-        <div class="lsr-track">
-          <div class="lsr-fill" style="width:${p*100}%;background:${levelColors[l]}"></div>
-        </div>
-      </div>
+  p.innerHTML = `
+    <div class="panel-hdr"><h2>${k?'설정':'設定'}</h2><button class="panel-close" onclick="closePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="sec-label">${k?'스테이지 크기':'ステージサイズ'}</div>
+    <div class="chip-group">${bsChips}</div>
+    <div class="divider-line"></div>
+    <div class="sec-label">${k?'UI 언어':'UI言語'}</div>
+    <div class="chip-group">
+      <div class="chip ${S.isKo?'active':''}" onclick="if(!S.isKo)toggleLang()">한국어</div>
+      <div class="chip ${!S.isKo?'active':''}" onclick="if(S.isKo)toggleLang()">日本語</div>
+    </div>
+    <div class="divider-line"></div>
+    <div class="sec-label">${k?'발음 듣기':'発音を聞く'}</div>
+    <div class="toggle-wrap" style="margin-bottom:14px">
+      <button class="toggle ${S.soundEnabled?'on':''}" onclick="toggleSound()"><div class="toggle-knob"></div></button>
+      <span class="toggle-label">${S.soundEnabled?(k?'발음 듣기 켜짐':'発音オン'):(k?'발음 듣기 꺼짐':'発音オフ')}</span>
+    </div>
+    <div class="divider-line"></div>
+    <div class="sec-label">${k?'글씨 크기':'文字サイズ'}</div>
+    <div class="chip-group">${faChips}</div>
+    <div class="setting-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      <input type="range" class="range-input" min="${sliderConf.min}" max="${sliderConf.max}" value="${sliderConf.val}" oninput="onFontSlide(this.value)">
+      <span style="font-size:11px;color:var(--dim);min-width:36px;text-align:right">${sliderConf.val}px</span>
+    </div>
+    <div class="preview-card">
+      <div style="font-size:${S.kanjiFontSize}px;font-weight:300;letter-spacing:2px;opacity:${S.fontArea===0?1:0.4};margin-bottom:4px">食べる</div>
+      <div style="font-size:${S.meaningFontSize*0.9}px;color:var(--blue);opacity:${S.fontArea===1?1:0.4};margin-bottom:2px">たべる</div>
+      <div style="font-size:${S.meaningFontSize}px;color:rgba(255,255,255,0.85);font-weight:500;opacity:${S.fontArea===1?1:0.3};margin-bottom:4px">먹다</div>
+      <div style="font-size:${S.exampleFontSize}px;color:rgba(255,255,255,0.6);opacity:${S.fontArea===2?1:0.2}">私は毎日朝ごはんを食べる。</div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${k?'사용 팁':'使い方のヒント'}</div>
+      ${k?'• 좌우 스와이프로 외움/못 외움 표시<br>• 헷갈리는 단어는 🔖 버튼으로 복습<br>• 스테이지를 나눠 매일 조금씩 학습':'• 左右スワイプで覚えた/覚えてないを記録<br>• 混乱しやすい単語は🔖で復習<br>• バッチに分けて毎日少しずつ学習'}
     </div>`;
-  }
-  document.getElementById('level-stats-list').innerHTML = html;
 }
 
-// ========== DIALOGS ==========
-function showDialog(emoji, title, msg, buttons) {
-  document.getElementById('dialog-emoji').textContent = emoji;
-  document.getElementById('dialog-title').textContent = title;
-  document.getElementById('dialog-msg').textContent = msg;
-  const btns = document.getElementById('dialog-buttons');
-  btns.innerHTML = '';
-  const wrap = document.createElement('div');
-  wrap.className = buttons.length > 1 ? 'dialog-confirm' : '';
-  buttons.forEach(b => {
+function setFontArea(v) { S.fontArea = v; renderSettingsPanel(); }
+function onFontSlide(v) {
+  const n = parseFloat(v);
+  if (S.fontArea===0) S.kanjiFontSize=n; else if(S.fontArea===1) S.meaningFontSize=n; else S.exampleFontSize=n;
+  saveProgress(); renderCard(); renderSettingsPanel();
+}
+
+// ============================================================
+// STATS PANEL — mirrors stats_panel.dart
+// ============================================================
+function renderStatsPanel() {
+  const p = document.getElementById('stats-panel');
+  if (p.style.display === 'none') return;
+  const k = S.isKo;
+  const batch = getBatchWords(), tot = batch.length;
+  const mem = batch.filter(w=>w.mem).length;
+  const flag = batch.filter(w=>w.flag).length;
+  const rem = tot-mem-flag, pct = tot>0?Math.round(mem/tot*100):0;
+  const lc = {1:'var(--n1)',2:'var(--n2)',3:'var(--n3)',4:'var(--n4)',5:'var(--n5)'};
+
+  let levelsHtml = '';
+  for (let l = 5; l >= 1; l--) {
+    const ws = wordData[l]||[], t=ws.length, m=ws.filter(w=>w.mem).length, f=ws.filter(w=>w.flag).length;
+    const pr = t>0?m/t:0;
+    levelsHtml += `<div class="lsr ${l===S.level?'cur':''}">
+      <div class="lsr-badge" style="background:${lc[l]}33;color:${lc[l]}">N${l}</div>
+      <div class="lsr-info"><div class="lsr-nums"><span>${m} / ${t}</span>${f>0?`<span style="margin-left:6px;color:rgba(231,76,60,0.7);font-size:10px">🔖 ${f}</span>`:''}<span class="lsr-pct" style="color:${lc[l]}">${Math.round(pr*100)}%</span></div>
+      <div class="lsr-track"><div class="lsr-fill" style="width:${pr*100}%;background:${lc[l]}"></div></div></div></div>`;
+  }
+
+  p.innerHTML = `
+    <div class="panel-hdr"><h2>${k?'학습 통계':'学習統計'}</h2><button class="panel-close" onclick="closePanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="sec-label">${k?`N${S.level} 현재 배치`:`N${S.level} 現在のバッチ`}</div>
+    <div class="stats-card">
+      <div class="mini-stats">
+        <div class="mini-stat mem"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="val">${mem}</span><span class="lbl">${k?'외움':'覚えた'}</span></div>
+        <div class="mini-stat flag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span class="val">${flag}</span><span class="lbl">${k?'복습 필요':'要復習'}</span></div>
+        <div class="mini-stat rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg><span class="val">${rem}</span><span class="lbl">${k?'미학습':'未学習'}</span></div>
+      </div>
+      <div class="sp-track"><div class="sp-fill" style="width:${pct}%"></div></div>
+      <div class="sp-pct">${k?`배치 완성도 ${pct}%`:`バッチ完成度 ${pct}%`}</div>
+    </div>
+    <div class="sec-label">${k?'레벨별 전체 현황':'レベル別全体状況'}</div>
+    ${levelsHtml}`;
+}
+
+// ============================================================
+// DIALOGS — mirrors flashcard_screen.dart dialogs
+// ============================================================
+function showDlg(emoji,title,msg,btns) {
+  document.getElementById('dlg-emoji').textContent = emoji;
+  document.getElementById('dlg-title').textContent = title;
+  document.getElementById('dlg-msg').textContent = msg;
+  const bc = document.getElementById('dlg-btns'); bc.innerHTML = '';
+  btns.forEach(b => {
     const btn = document.createElement('button');
-    btn.className = `dialog-btn ${b.cls}`;
-    btn.textContent = b.label;
-    btn.onclick = b.action;
-    wrap.appendChild(btn);
+    btn.className = `dlg-btn ${b.c}`; btn.textContent = b.l; btn.onclick = b.fn;
+    bc.appendChild(btn);
   });
-  btns.appendChild(wrap);
-  document.getElementById('dialog').style.display = 'flex';
+  document.getElementById('dlg').style.display = 'flex';
 }
+function closeDlg() { document.getElementById('dlg').style.display = 'none'; }
+function dlgBgClick(e) { if (e.target.id === 'dlg' && dlgDismissable) closeDlg(); }
 
-function closeDialog() {
-  document.getElementById('dialog').style.display = 'none';
-}
-
-function dialogBgClick(e) {
-  // Only allow closing if it's not a forced dialog (round complete)
-  if (e.target === document.getElementById('dialog') && !document.getElementById('dialog').dataset.forced) {
-    closeDialog();
-  }
-}
-
+// mirrors _showCompletionDialog
 function showCompletionDialog() {
-  const isKo = state.isKo;
-  const count = currentCompletionCount();
-  const flagCount = getAllFlaggedCount();
-  const buttons = [
-    { label: isKo ? '다시 공부하기' : 'もう一度学習', cls: 'green', action: closeDialog }
-  ];
+  const k = S.isKo, cnt = getCurCompletion();
+  let fc = 0; for (let l=1;l<=5;l++) fc += (wordData[l]||[]).filter(w=>w.flag).length;
   const isLast = currentBatch() >= totalBatches();
-  buttons.push({
-    label: isLast ? (isKo ? '다음 레벨로 →' : '次のレベルへ →') : (isKo ? '다음 스테이지로 →' : '次のステージへ →'),
-    cls: 'blue',
-    action: () => {
-      closeDialog();
-      if (isLast) {
-        const next = state.level - 1;
-        setLevel(next >= 1 ? next : 5);
-      } else {
-        goToBatch(currentBatch());
-      }
-    }
-  });
-  if (flagCount > 0) {
-    buttons.push({
-      label: isKo ? `복습하기 (${flagCount}개)` : `復習する (${flagCount}個)`,
-      cls: 'red',
-      action: () => { closeDialog(); state.bookmarkMode = true; refreshSession(); updateUI(); }
-    });
-  }
-  document.getElementById('dialog').dataset.forced = '';
-  showDialog('🎉',
-    isKo ? `${count}회독 완료!` : `${count}周目完了!`,
-    isKo ? `스테이지 ${currentBatch()} 단어를 모두 외웠어요!` : `ステージ ${currentBatch()} の単語を全部覚えました！`,
-    buttons
-  );
-}
-
-function showRoundDialog() {
-  const isKo = state.isKo;
-  const rem = state.sessionWords.length;
-  const isLast = currentBatch() >= totalBatches();
-  const buttons = [
-    { label: isKo ? `남은 단어 공부 (${rem}개)` : `残りの単語を学習 (${rem}個)`, cls: 'blue', action: closeDialog }
+  const btns = [
+    {l:k?'다시 공부하기':'もう一度学習', c:'green', fn:closeDlg},
+    {l:isLast?(k?'다음 레벨로 →':'次のレベルへ →'):(k?'다음 스테이지로 →':'次のステージへ →'), c:'blue',
+      fn:()=>{closeDlg();if(isLast){const n=S.level-1;setLevel(n>=1?n:5);}else goToBatch(currentBatch());}},
   ];
-  buttons.push({
-    label: isLast ? (isKo ? '다음 레벨로 →' : '次のレベルへ →') : (isKo ? '다음 스테이지로 →' : '次のステージへ →'),
-    cls: 'green',
-    action: () => {
-      closeDialog();
-      if (isLast) { const next = state.level - 1; setLevel(next >= 1 ? next : 5); }
-      else goToBatch(currentBatch());
-    }
-  });
-  document.getElementById('dialog').dataset.forced = 'true';
-  showDialog('📖',
-    isKo ? '한 바퀴 완료!' : '一周完了！',
-    isKo ? `아직 외우지 못한 단어가 ${rem}개 있어요.` : `まだ覚えていない単語が${rem}個あります。`,
-    buttons
-  );
+  if (fc > 0) btns.push({l:k?`복습하기 (${fc}개)`:`復習する (${fc}個)`, c:'red',
+    fn:()=>{closeDlg();setStudyMode('flagged');}});
+  dlgDismissable = true; // Flutter: barrierDismissible default true
+  showDlg('🎉', k?`${cnt}회독 완료!`:`${cnt}周目完了!`,
+    k?`스테이지 ${currentBatch()} 단어를 모두 외웠어요!`:`ステージ ${currentBatch()} の単語を全部覚えました！`, btns);
 }
 
-function getAllFlaggedCount() {
-  let c = 0;
-  for (let l = 1; l <= 5; l++) c += (wordData[l] || []).filter(w => w.flag).length;
-  return c;
+// mirrors _showRoundCompleteDialog
+function showRoundCompleteDialog() {
+  const k = S.isKo;
+  const rem = getBatchWords().filter(w => !w.mem).length;
+  const isLast = currentBatch() >= totalBatches();
+  const msg = S.sessionWords.length === 0
+    ? (k?'모든 단어를 넘겼습니다.\n다시 공부하시겠어요?':'全ての単語をスキップしました。\nもう一度学習しますか？')
+    : (k?`아직 외우지 못한 단어가 ${rem}개 있어요.\n계속 공부하시겠어요?`:`まだ覚えていない単語が${rem}個あります。\n続けて勉強しますか？`);
+  const btns = [
+    {l:k?`남은 단어 공부 (${rem}개)`:`残りの単語を学習 (${rem}個)`, c:'blue', fn:()=>{closeDlg();studyRemainingWords();}},
+    {l:isLast?(k?'다음 레벨로 →':'次のレベルへ →'):(k?'다음 스테이지로 →':'次のステージへ →'), c:'green',
+      fn:()=>{closeDlg();if(isLast){const n=S.level-1;setLevel(n>=1?n:5);}else goToBatch(currentBatch());}},
+  ];
+  dlgDismissable = false; // Flutter: barrierDismissible: false
+  showDlg('📖', k?'한 바퀴 완료!':'一周完了！', msg, btns);
 }
 
-// ========== SWIPE ==========
-function touchStart(e) {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-}
-
-function touchEnd(e) {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
-    if (dx < 0) markNotMemorized();
-    else markMemorized();
-  }
-}
-
-// ========== SAVE / LOAD ==========
-function saveProgress() {
-  const progressByLevel = {};
-  for (let l = 1; l <= 5; l++) {
-    const words = wordData[l] || [];
-    const p = {};
-    words.forEach((w, i) => {
-      if (w.mem || w.flag) p[i] = { m: w.mem, f: w.flag };
-    });
-    progressByLevel[l] = p;
-  }
-  const data = {
-    level: state.level,
-    batchSize: state.batchSize,
-    batchStart: state.batchStart,
-    isKo: state.isKo,
-    soundEnabled: state.soundEnabled,
-    kanjiFontSize: state.kanjiFontSize,
-    meaningFontSize: state.meaningFontSize,
-    exampleFontSize: state.exampleFontSize,
-    completionCount: state.completionCount,
-    progress: progressByLevel,
-  };
-  try { localStorage.setItem('jlpt_state', JSON.stringify(data)); } catch(e) {}
-}
-
-function loadProgress() {
-  try {
-    const raw = localStorage.getItem('jlpt_state');
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    state.level = d.level || 5;
-    state.batchSize = d.batchSize || 50;
-    state.batchStart = d.batchStart || 0;
-    state.isKo = d.isKo !== undefined ? d.isKo : true;
-    state.soundEnabled = d.soundEnabled !== undefined ? d.soundEnabled : true;
-    state.kanjiFontSize = d.kanjiFontSize || 30;
-    state.meaningFontSize = d.meaningFontSize || 20;
-    state.exampleFontSize = d.exampleFontSize || 15;
-    state.completionCount = d.completionCount || {};
-    state.progress = d.progress || {};
-  } catch(e) {}
-}
-
-// ========== START ==========
+// ============================================================
+// START
+// ============================================================
 window.addEventListener('DOMContentLoaded', init);
 </script>
-
-<!-- SERVICE WORKER -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 </body>
 </html>
